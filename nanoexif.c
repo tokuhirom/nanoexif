@@ -54,7 +54,7 @@ http://www.ryouto.jp/f6exif/exif.html
 #include <stdbool.h>
 
 /* private constants */
-#define NANONANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)
+#define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)
 #define NANOEXIF_SOI_APP1    "\xFF\xD8\xFF\xE1"
 #define NANOEXIF_EXIF_HEADER "\x45\x78\x69\x66\x00\x00"
 
@@ -78,7 +78,6 @@ http://www.ryouto.jp/f6exif/exif.html
 #define NANOEXIF_TYPE_DFLOAT    0x000c
 
 typedef enum {
-    NANOEXIF_ENDIAN_UNKNOWN = -1,
     NANOEXIF_LITTLE_ENDIAN,
     NANOEXIF_BIG_ENDIAN,
 } nanoexif_endian;
@@ -92,7 +91,6 @@ typedef struct {
 
 typedef struct {
     FILE *fp;
-    nanoexif_endian machine_endian;
     nanoexif_endian endian;
 } nanoexif;
 
@@ -127,15 +125,10 @@ static inline uint32_t swap_endian_32(uint32_t i) {
 }
 
 nanoexif * nanoexif_init(FILE *fp) {
-    static nanoexif_endian machine_endian = NANOEXIF_ENDIAN_UNKNOWN;
     nanoexif_endian endian;
-    if (machine_endian == NANOEXIF_ENDIAN_UNKNOWN) {
-        int x=1;
-        machine_endian = (*(char*)&x) ? NANOEXIF_LITTLE_ENDIAN : NANOEXIF_BIG_ENDIAN;
-    }
 
-    uint8_t buf[NANONANOEXIF_EXIF_HEADER_SIZE];
-    if (fread(buf, sizeof(char), NANONANOEXIF_EXIF_HEADER_SIZE, fp) != NANONANOEXIF_EXIF_HEADER_SIZE) {
+    uint8_t buf[NANOEXIF_EXIF_HEADER_SIZE];
+    if (fread(buf, sizeof(char), NANOEXIF_EXIF_HEADER_SIZE, fp) != NANOEXIF_EXIF_HEADER_SIZE) {
         D("CANNOT OPEN\n");
         return NULL;
     }
@@ -175,7 +168,6 @@ nanoexif * nanoexif_init(FILE *fp) {
         return NULL;
     }
     ne->endian         = endian;
-    ne->machine_endian = machine_endian;
     ne->fp             = fp;
     return ne;
 }
@@ -200,7 +192,7 @@ bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry) {
         return false;
     }
 
-    if (ne->machine_endian != ne->endian) {
+    if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
         entry->tag    = swap_endian_16(entry->tag);
         entry->type   = swap_endian_16(entry->type);
         entry->count  = swap_endian_32(entry->count);
@@ -214,20 +206,20 @@ uint16_t nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *ent
 /**
  * @return allocated string. you should free(2) the buffer.
  */
-uint8_t * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry) {
+char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4) {
-        return (uint8_t*)(entry->offset);
+        return (char*)(entry->offset);
     } else {
         uint32_t offset = _read_32(ne->endian, entry->offset);
         long orig = ftell(ne->fp);
         if (orig == -1) {
             return NULL;
         }
-        if (fseek(ne->fp, NANONANOEXIF_EXIF_HEADER_SIZE+offset-8, SEEK_SET) != 0) {
+        if (fseek(ne->fp, NANOEXIF_EXIF_HEADER_SIZE+offset-8, SEEK_SET) != 0) {
             return NULL;
         }
 
-        uint8_t * buf = (uint8_t*)malloc(entry->count);
+        char * buf = (char*)malloc(entry->count);
         if (!buf) { return NULL; }
         if (fread(buf, 1, entry->count, ne->fp) != entry->count) {
             free(buf);
@@ -255,7 +247,7 @@ uint32_t nanoexif_skip_ifd_body(nanoexif *ne) {
     uint32_t skip = _read_32(ne->endian, lenbuf);
     if (skip != 0) {
         D("SEEK TO skip; %d\n", skip);
-        if (fseek(ne->fp, NANONANOEXIF_EXIF_HEADER_SIZE+skip-8, SEEK_SET) != 0) {
+        if (fseek(ne->fp, NANOEXIF_EXIF_HEADER_SIZE+skip-8, SEEK_SET) != 0) {
             D("cannot seek 4\n");
             return -2;
         }
@@ -300,7 +292,6 @@ int main(int argc, char **argv) {
             case NANOEXIF_TAG_MAKE:
                 assert(entry.type == NANOEXIF_TYPE_ASCII);
                 {
-                    size_t bytes;
                     char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
                     assert(make);
                     ok(strcmp("Apple", make) ==0, "Make");
@@ -376,7 +367,7 @@ int main(int argc, char **argv) {
         }
         assert(compression_ok && jpeg_offset && jpeg_byte_count);
         D("jpeg offset: %X\n", jpeg_offset);
-        if (fseek(ne->fp, NANONANOEXIF_EXIF_HEADER_SIZE-8+jpeg_offset, SEEK_SET) != 0) {
+        if (fseek(ne->fp, NANOEXIF_EXIF_HEADER_SIZE-8+jpeg_offset, SEEK_SET) != 0) {
             D("cannot seek 9\n");
             assert(0);
         }
