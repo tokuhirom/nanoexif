@@ -53,46 +53,12 @@ http://www.ryouto.jp/f6exif/exif.html
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "nanoexif.h"
+
 /* private constants */
 #define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)
 #define NANOEXIF_SOI_APP1    "\xFF\xD8\xFF\xE1"
 #define NANOEXIF_EXIF_HEADER "\x45\x78\x69\x66\x00\x00"
-
-#define NANOEXIF_TAG_COMPRESSION        0x103
-#define NANOEXIF_TAG_MAKE               0x10f
-#define NANOEXIF_TAG_ORIENTATION        0x112
-#define NANOEXIF_TAG_JPEG_IF_OFFSET     0x201
-#define NANOEXIF_TAG_JPEG_IF_BYTE_COUNT 0x202
-
-#define NANOEXIF_TYPE_BYTE      0x0001
-#define NANOEXIF_TYPE_ASCII     0x0002
-#define NANOEXIF_TYPE_SHORT     0x0003
-#define NANOEXIF_TYPE_LONG      0x0004
-#define NANOEXIF_TYPE_RATIONAL  0x0005
-#define NANOEXIF_TYPE_SBYTE     0x0006
-#define NANOEXIF_TYPE_UNDEFINED 0x0007
-#define NANOEXIF_TYPE_SSHORT    0x0008
-#define NANOEXIF_TYPE_SLONG     0x0009
-#define NANOEXIF_TYPE_SRATIONAL 0x000a
-#define NANOEXIF_TYPE_FLOAT     0x000b
-#define NANOEXIF_TYPE_DFLOAT    0x000c
-
-typedef enum {
-    NANOEXIF_LITTLE_ENDIAN,
-    NANOEXIF_BIG_ENDIAN,
-} nanoexif_endian;
-
-typedef struct {
-    uint16_t tag;
-    uint16_t type;
-    uint32_t count;
-    uint8_t  offset[4];
-} nanoexif_ifd_entry;
-
-typedef struct {
-    FILE *fp;
-    nanoexif_endian endian;
-} nanoexif;
 
 #ifdef DEBUG
 #define D(...) printf(__VA_ARGS__);
@@ -100,7 +66,7 @@ typedef struct {
 #define D(...)
 #endif
 
-static inline uint32_t _read_32(nanoexif_endian endian, const uint8_t *buf) {
+static inline uint32_t read_32(nanoexif_endian endian, const uint8_t *buf) {
     if (endian == NANOEXIF_LITTLE_ENDIAN) {
         D("LITTLE_ENDIAN\n");
         return (buf[3]<<24) | (buf[2]<<16) | (buf[1]<<8) | buf[0];
@@ -109,7 +75,7 @@ static inline uint32_t _read_32(nanoexif_endian endian, const uint8_t *buf) {
     }
 }
 
-static inline uint16_t _read_16(nanoexif_endian endian, const uint8_t *buf) {
+static inline uint16_t read_16(nanoexif_endian endian, const uint8_t *buf) {
     if (endian == NANOEXIF_LITTLE_ENDIAN) {
         return (buf[1]<<8) | buf[0];
     } else {
@@ -152,7 +118,7 @@ nanoexif * nanoexif_init(FILE *fp) {
         D("tiff header\n");
         return NULL; // tiff
     }
-    uint32_t len = _read_32(endian, buf+16);
+    uint32_t len = read_32(endian, buf+16);
     uint8_t *p = buf+16;
     D("%d %d %d %d\n", p[0], p[1], p[2], p[3]);
     if (len != 8) { // normally 8.
@@ -183,7 +149,7 @@ uint16_t nanoexif_read_ifd_cnt(nanoexif * ne) {
         D("cannot read 1: %d\n", read);
         return false;
     }
-    return _read_16(ne->endian, ifdcntbuf);
+    return read_16(ne->endian, ifdcntbuf);
 }
 
 bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry) {
@@ -201,7 +167,7 @@ bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry) {
 }
 
 uint16_t nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry) {
-    return _read_16(ne->endian, entry->offset);
+    return read_16(ne->endian, entry->offset);
 }
 /**
  * @return allocated string. you should free(2) the buffer.
@@ -210,7 +176,7 @@ char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry
     if (entry->count <= 4) {
         return (char*)(entry->offset);
     } else {
-        uint32_t offset = _read_32(ne->endian, entry->offset);
+        uint32_t offset = read_32(ne->endian, entry->offset);
         long orig = ftell(ne->fp);
         if (orig == -1) {
             return NULL;
@@ -244,7 +210,7 @@ uint32_t nanoexif_skip_ifd_body(nanoexif *ne) {
         D("cannot read 3\n");
         return -1;
     }
-    uint32_t skip = _read_32(ne->endian, lenbuf);
+    uint32_t skip = read_32(ne->endian, lenbuf);
     if (skip != 0) {
         D("SEEK TO skip; %d\n", skip);
         if (fseek(ne->fp, NANOEXIF_EXIF_HEADER_SIZE+skip-8, SEEK_SET) != 0) {
@@ -345,14 +311,14 @@ int main(int argc, char **argv) {
                 }
             case NANOEXIF_TAG_JPEG_IF_OFFSET:
                 {
-                    uint32_t offset = _read_32(ne->endian, entry.offset);
+                    uint32_t offset = read_32(ne->endian, entry.offset);
                     D("offset: %d\n", offset);
                     jpeg_offset = offset;
                     break;
                 }
             case NANOEXIF_TAG_JPEG_IF_BYTE_COUNT:
                 {
-                    uint32_t offset = _read_32(ne->endian, entry.offset);
+                    uint32_t offset = read_32(ne->endian, entry.offset);
                     D("byte_count: %d\n", offset);
                     jpeg_byte_count = offset;
                     break;
