@@ -214,7 +214,7 @@ uint16_t nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *ent
 /**
  * @return allocated string. you should free(2) the buffer.
  */
-uint8_t * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry, size_t * size) {
+uint8_t * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4) {
         return (uint8_t*)(entry->offset);
     } else {
@@ -301,10 +301,24 @@ int main(int argc, char **argv) {
                 assert(entry.type == NANOEXIF_TYPE_ASCII);
                 {
                     size_t bytes;
-                    char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry, bytes);
+                    char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
                     assert(make);
-                    ok(strstr("Apple", make) ==0, "Make");
+                    ok(strcmp("Apple", make) ==0, "Make");
                     free(make);
+                }
+                break;
+            default:
+                {
+                    switch (entry.type) {
+                    case NANOEXIF_TYPE_ASCII:
+                        {
+                            char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
+                            D("ascii: %d, %s\n", entry.tag, make);
+                            assert(make);
+                            free(make);
+                        }
+                        break;
+                    }
                 }
                 break;
             }
