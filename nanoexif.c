@@ -174,6 +174,7 @@ bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry) {
 uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint16_t)) {
         uint16_t *ret = malloc(sizeof(uint16_t)*entry->count);
+        if (!ret) { return NULL; }
         *ret =read_16(ne->endian, entry->offset);
         if (entry->count == 2) {
             *(ret+1) =read_16(ne->endian, entry->offset+2);
@@ -213,6 +214,7 @@ uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *en
 uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint32_t)) {
         uint32_t *ret = malloc(sizeof(uint32_t));
+        if (!ret) { return NULL; }
         *ret = read_32(ne->endian, entry->offset);
         return ret;
     } else {
@@ -252,7 +254,8 @@ uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *ent
 char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4) {
         char *ret = malloc(sizeof(char)*entry->count);
-        memcpy(ret, entry->offset, sizeof(char*)*entry->count);
+        if (!ret) { return NULL; }
+        memcpy(ret, entry->offset, entry->count);
         return ret;
     } else {
         uint32_t offset = read_32(ne->endian, entry->offset);
