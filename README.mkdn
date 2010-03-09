@@ -1,0 +1,28 @@
+nanoexif
+========
+
+DESCRIPTION
+-----------
+
+nanoexif is simple exif parser library.
+Written in plain C99(and uses some gcc extensions).
+
+LIMITATION
+----------
+
+This module supports C99. I don't want to support legacy systems, but I can accept your patch.
+
+
+SEE ALSO
+--------
+
+libexif( http://libexif.sourceforge.net/ ) is most popular exif manupulation library.But it's under LGPL.
+
+iphone-exif (http://code.google.com/p/iphone-exif/ ) is exif manipulation library for iPhone.It is only for iPhone, and wrapped under GPL.
+
+REFERENCE
+---------
+
+http://hp.vector.co.jp/authors/VA032610/JPEGFormat/AboutExif.htm
+http://www.ryouto.jp/f6exif/exif.html
+
