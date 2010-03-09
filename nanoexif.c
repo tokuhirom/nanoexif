@@ -67,7 +67,6 @@ http://www.ryouto.jp/f6exif/exif.html
 
 static inline uint32_t read_32(nanoexif_endian endian, const uint8_t *buf) {
     if (endian == NANOEXIF_LITTLE_ENDIAN) {
-        D("LITTLE_ENDIAN\n");
         return (buf[3]<<24) | (buf[2]<<16) | (buf[1]<<8) | buf[0];
     } else {
         return (buf[0]<<24) | (buf[1]<<16) | (buf[2]<<8) | buf[3];
@@ -89,6 +88,9 @@ static inline uint32_t swap_endian_32(uint32_t i) {
     return ((i&0x000000ff)<<24) | ((i&0x0000ff00)<<8) | ((i&0x00ff0000)>>8) | ((i&0xff000000)>>24);
 }
 
+/**
+ * FF D8 FF E1 SS SS 45 78 69 66 00 00 TT TT
+ */
 nanoexif * nanoexif_init(FILE *fp) {
     nanoexif_endian endian;
 
@@ -113,8 +115,9 @@ nanoexif * nanoexif_init(FILE *fp) {
         D("LITTLE ENDIAN\n");
         endian = NANOEXIF_LITTLE_ENDIAN;
     }
-    if (memcmp(buf+14, "\x00\x2a", 2) != 0) {
-        D("tiff header\n");
+    uint16_t tag_mark = read_16(endian, buf+14);
+    if (tag_mark == 0x2A00) {
+        D("tiff header fail\n");
         return NULL; // tiff
     }
     uint32_t len = read_32(endian, buf+16);
