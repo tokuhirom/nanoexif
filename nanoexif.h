@@ -72,7 +72,7 @@ typedef struct {
 
 nanoexif * nanoexif_init(FILE *fp);
 void nanoexif_free(nanoexif * ne);
-uint16_t nanoexif_read_ifd_cnt(nanoexif * ne);
+int32_t nanoexif_read_ifd_cnt(nanoexif * ne);
 bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry);
 uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry);
 char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry);

@@ -145,12 +145,12 @@ void nanoexif_free(nanoexif * ne) {
     free(ne);
 }
 
-uint16_t nanoexif_read_ifd_cnt(nanoexif * ne) {
+int32_t nanoexif_read_ifd_cnt(nanoexif * ne) {
     uint8_t ifdcntbuf[2];
     int read = fread(ifdcntbuf, sizeof(char), sizeof(ifdcntbuf), ne->fp);
     if (read != 2) {
         D("cannot read 1: %d\n", read);
-        return false;
+        return -1;
     }
     return read_16(ne->endian, ifdcntbuf);
 }
