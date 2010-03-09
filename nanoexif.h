@@ -44,7 +44,8 @@ typedef struct {
 typedef struct {
     FILE *fp;
     nanoexif_endian endian;
-    uint32_t offset;
+    uint8_t * buf;
+    size_t offset;
 } nanoexif;
 
 #define NANOEXIF_TAG_COMPRESSION        0x0103
@@ -70,15 +71,13 @@ typedef struct {
 
 #define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)
 
-nanoexif * nanoexif_init(FILE *fp);
+nanoexif * nanoexif_init(FILE *fp, uint32_t *ifd_offset);
 void nanoexif_free(nanoexif * ne);
-int32_t nanoexif_read_ifd_cnt(nanoexif * ne);
-bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry);
+nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t * next, uint16_t * cnt);
 uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry);
 char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry);
 uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry *entry);
 uint32_t * nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry);
-int nanoexif_skip_ifd_body(nanoexif *ne);
 const char *nanoexif_tag_name(uint32_t n);
 
 #endif  // NANOEXIF_H__

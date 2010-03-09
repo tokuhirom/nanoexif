@@ -18,29 +18,31 @@ int main(int argc, char **argv) {
     }
     uint32_t jpeg_byte_count = 0;
     uint8_t * thumb;
-    nanoexif * ne = nanoexif_init(ifp);
+    uint32_t ifd0_offset;
+    nanoexif * ne = nanoexif_init(ifp, &ifd0_offset);
     assert(ne);
 
     // read ifd0
     uint16_t orientation = 0;
+    uint32_t ifd1_offset;
     {
-        uint16_t ifd_entry_cnt = nanoexif_read_ifd_cnt(ne);
+        uint16_t cnt;
+        nanoexif_ifd_entry* entries = nanoexif_read_ifd(ne, ifd0_offset, &ifd1_offset, &cnt);
+        assert(entries);
         int i;
-        for (i=0; i<ifd_entry_cnt; i++) {
-            nanoexif_ifd_entry entry;
-            assert(nanoexif_read_ifd_entry(ne, &entry));
+        for (i=0; i<cnt; i++) {
             D("-- %d\n", i);
-            switch (entry.tag) {
+            switch (entries[i].tag) {
             case NANOEXIF_TAG_ORIENTATION:
-                assert(entry.type == NANOEXIF_TYPE_SHORT);
-                uint16_t *x = nanoexif_get_ifd_entry_data_short(ne, &entry);
+                assert(entries[i].type == NANOEXIF_TYPE_SHORT);
+                uint16_t *x = nanoexif_get_ifd_entry_data_short(ne, &entries[i]);
                 orientation = *x;
                 free(x);
                 break;
             case NANOEXIF_TAG_MAKE:
-                assert(entry.type == NANOEXIF_TYPE_ASCII);
+                assert(entries[i].type == NANOEXIF_TYPE_ASCII);
                 {
-                    char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
+                    char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entries[i]);
                     assert(make);
                     ok(strcmp("Apple", make) ==0, "Make");
                     free(make);
@@ -48,11 +50,11 @@ int main(int argc, char **argv) {
                 break;
             default:
                 {
-                    switch (entry.type) {
+                    switch (entries[i].type) {
                     case NANOEXIF_TYPE_ASCII:
                         {
-                            char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
-                            D("ascii: %d, %s\n", entry.tag, make);
+                            char *make = nanoexif_get_ifd_entry_data_ascii(ne, &entries[i]);
+                            D("ascii: %d, %s\n", entries[i].tag, make);
                             assert(make);
                             free(make);
                         }
@@ -63,29 +65,31 @@ int main(int argc, char **argv) {
             }
             // TODO: endian
             D("tag: %X\ntype: %X\ncount: %d\n",
-                entry.tag,
-                entry.type,
-                entry.count
+                entries[i].tag,
+                entries[i].type,
+                entries[i].count
             );
         }
-        assert( nanoexif_skip_ifd_body(ne) > 0 );
+        free(entries);
     }
 
     // ifd1
     {
-        uint16_t ifd_entry_cnt = nanoexif_read_ifd_cnt(ne);
+        uint16_t cnt;
+        uint32_t ifd2_offset;
+        nanoexif_ifd_entry* entries = nanoexif_read_ifd(ne, ifd1_offset, &ifd2_offset, &cnt);
+        assert(entries);
+        ok(ifd2_offset == 0, "ifd2 offset is 0");
         int i;
         bool compression_ok      = false;
         uint32_t jpeg_offset     = 0;
-        for (i=0; i<ifd_entry_cnt; i++) {
-            nanoexif_ifd_entry entry;
-            assert(nanoexif_read_ifd_entry(ne, &entry));
+        for (i=0; i<cnt; i++) {
             D("-- %d\n", i);
-            switch (entry.tag) {
+            switch (entries[i].tag) {
             case NANOEXIF_TAG_COMPRESSION:
                 {
-                    assert(entry.type == NANOEXIF_TYPE_SHORT);
-                    uint16_t * o = nanoexif_get_ifd_entry_data_short(ne, &entry);
+                    assert(entries[i].type == NANOEXIF_TYPE_SHORT);
+                    uint16_t * o = nanoexif_get_ifd_entry_data_short(ne, &entries[i]);
                     assert(*o==6);
                     D("jpeg ok\n");
                     free(o);
@@ -94,7 +98,7 @@ int main(int argc, char **argv) {
                 }
             case NANOEXIF_TAG_JPEG_IF_OFFSET:
                 {
-                    uint32_t *offset = nanoexif_get_ifd_entry_data_long(ne, &entry);
+                    uint32_t *offset = nanoexif_get_ifd_entry_data_long(ne, &entries[i]);
                     assert(offset);
                     D("offset: %d\n", *offset);
                     jpeg_offset = *offset;
@@ -103,32 +107,20 @@ int main(int argc, char **argv) {
                 }
             case NANOEXIF_TAG_JPEG_IF_BYTE_COUNT:
                 {
-                    uint32_t *offset = nanoexif_get_ifd_entry_data_long(ne, &entry);
+                    uint32_t *offset = nanoexif_get_ifd_entry_data_long(ne, &entries[i]);
                     D("byte_count: %d\n", *offset);
                     jpeg_byte_count = *offset;
                     free(offset);
                     break;
                 }
             }
-            // TODO: endian
-            D("tag: %X\ntype: %X\ncount: %d\n",
-                entry.tag,
-                entry.type,
-                entry.count
-            );
         }
         assert(compression_ok && jpeg_offset && jpeg_byte_count);
         D("jpeg offset: %X\n", jpeg_offset);
-        if (fseek(ne->fp, NANOEXIF_EXIF_HEADER_SIZE-8+jpeg_offset, SEEK_SET) != 0) {
-            D("cannot seek 9\n");
-            assert(0);
-        }
         thumb = (uint8_t*)malloc(jpeg_byte_count);
         assert(thumb);
-        if (fread(thumb, sizeof(uint8_t), jpeg_byte_count, ne->fp) != jpeg_byte_count) {
-        // if (fread(buf, sizeof(uint8_t), jpeg_byte_count, ne->fp) != jpeg_byte_count) {
-            D("FAIL!\n");
-        }
+        memcpy(thumb, ne->buf + jpeg_offset, jpeg_byte_count);
+        free(entries);
     }
 
     ok(!!thumb, "thumbnail generated");

@@ -52,12 +52,9 @@ http://www.ryouto.jp/f6exif/exif.html
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "nanoexif.h"
-
-/* private constants */
-#define NANOEXIF_SOI_APP1    "\xFF\xD8\xFF\xE1"
-#define NANOEXIF_EXIF_HEADER "\x45\x78\x69\x66\x00\x00"
 
 #ifdef DEBUG
 #define D(...) printf(__VA_ARGS__);
@@ -88,91 +85,132 @@ static inline uint32_t swap_endian_32(uint32_t i) {
     return ((i&0x000000ff)<<24) | ((i&0x0000ff00)<<8) | ((i&0x00ff0000)>>8) | ((i&0xff000000)>>24);
 }
 
-/**
- * FF D8 FF E1 SS SS 45 78 69 66 00 00 TT TT
- */
-nanoexif * nanoexif_init(FILE *fp) {
-    nanoexif_endian endian;
+static inline nanoexif * parse_app1(FILE * fp, uint16_t app1_len, uint32_t * ifd_offset) {
+    if (app1_len < 6) { return NULL; }
 
-    uint8_t buf[NANOEXIF_EXIF_HEADER_SIZE];
-    if (fread(buf, sizeof(char), NANOEXIF_EXIF_HEADER_SIZE, fp) != NANOEXIF_EXIF_HEADER_SIZE) {
-        D("CANNOT OPEN\n");
+    // check exif header
+    {
+        uint8_t exif_header[6];
+        if (fread(exif_header, 1, 6, fp) != 6) {
+            D("CANNOT read exif header\n");
+            return NULL;
+        }
+        const char *EXIF_HEADER = "\x45\x78\x69\x66\x00\x00";
+        if (memcmp(exif_header, EXIF_HEADER, 6)!=0) {
+            D("EXIFHEADER\n");
+            return NULL;
+        }
+    }
+
+    uint8_t *buf = malloc(app1_len-6);
+    if (!buf) { return NULL; }
+
+    if (fread(buf, 1, app1_len-6, fp) != app1_len-6) {
+        D("CANNOT read app1 header\n");
+        free(buf);
         return NULL;
     }
-    if (memcmp(buf, NANOEXIF_SOI_APP1, sizeof(NANOEXIF_SOI_APP1)-1)!=0) {
-        D("SOI\n");
-        return NULL;
-    }
-    if (memcmp(buf+6, NANOEXIF_EXIF_HEADER, sizeof(NANOEXIF_EXIF_HEADER)-1)!=0) {
-        D("EXIFHEADER\n");
-        return NULL;
-    }
-    D("ENDIAN: %X\n", buf[12]);
-    if (memcmp(buf+12, "\x4d\x4d", 2) == 0) {
+
+    nanoexif_endian endian;
+    if (memcmp(buf, "\x4d\x4d", 2) == 0) {
         D("BIG ENDIAN\n");
         endian = NANOEXIF_BIG_ENDIAN;
     } else { // 4949
         D("LITTLE ENDIAN\n");
         endian = NANOEXIF_LITTLE_ENDIAN;
     }
-    uint16_t tag_mark = read_16(endian, buf+14);
+
+    uint16_t tag_mark = read_16(endian, buf+2);
     if (tag_mark == 0x2A00) {
         D("tiff header fail\n");
+        free(buf);
         return NULL; // tiff
     }
-    uint32_t len = read_32(endian, buf+16);
-    uint8_t *p = buf+16;
-    D("%d %d %d %d\n", p[0], p[1], p[2], p[3]);
-    if (len != 8) { // normally 8.
-        D("seek : %d\n", len);
-        if (fseek(fp, len-8, SEEK_CUR) != 0) {
-            D("CANNOT SEEK\n");
-            return NULL; // error
-        }
-    }
-
-    long offset = ftell(fp);
-    if (offset == -1) { return NULL; }
+    *ifd_offset = read_32(endian, buf+4);
 
     nanoexif * ne = malloc(sizeof(nanoexif));
     if (!ne) {
+        free(buf);
         return NULL;
     }
     ne->endian         = endian;
     ne->fp             = fp;
-    ne->offset         = offset - 8;
+    ne->buf            = buf;
     return ne;
 }
 
+/**
+ * FF D8 FF E1 SS SS 45 78 69 66 00 00 TT TT
+ */
+nanoexif * nanoexif_init(FILE *fp, uint32_t *ifd_offset) {
+    {
+        char soi[2];
+        if (fread(soi, sizeof(char), 2, fp) != 2) {
+            D("cannot read soi\n");
+            return NULL;
+        }
+        if (soi[0] != '\xff' && soi[1] != '\xd8') {
+            D("err, not soi");
+            return NULL;
+        }
+    }
+
+    /* some jpeg file put APP0 header before APP1 header. Yes, this is invalid. */
+    while (1) {
+        uint8_t marker_len[4];
+        if (fread(marker_len, 1, sizeof(marker_len), fp) != sizeof(marker_len)) {
+            D("cannot read marker\n");
+            return NULL;
+        }
+        if (marker_len[0] != (uint8_t)'\xFF') {
+            D("invalid marker\n");
+            return NULL;
+        }
+
+        /* marker length is always big endian */
+        uint16_t len = read_16(NANOEXIF_BIG_ENDIAN, marker_len+2);
+
+        if (marker_len[1] == (uint8_t)'\xE1') { // APP1
+            D("app1 header : %d\n", len);
+            return parse_app1(fp, len, ifd_offset);
+        } else if (marker_len[1] == (uint8_t)'\xDA') { // SOS
+            /* reach to image.. hmm. this jpeg doesn't contains exif. */
+            return NULL; /* missing exif */
+        } else {
+            /* skip this part... */
+            if (fseek(fp, len-2, SEEK_CUR) != 0) {
+                D("cannot seek\n");
+                return NULL;
+            }
+        }
+    }
+    return NULL; // should not reach here
+}
+
 void nanoexif_free(nanoexif * ne) {
+    free(ne->buf);
     free(ne);
 }
 
-int32_t nanoexif_read_ifd_cnt(nanoexif * ne) {
-    uint8_t ifdcntbuf[2];
-    int read = fread(ifdcntbuf, sizeof(char), sizeof(ifdcntbuf), ne->fp);
-    if (read != 2) {
-        D("cannot read 1: %d\n", read);
-        return -1;
+nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t* next, uint16_t * cnt) {
+    *cnt = read_16(ne->endian, ne->buf + offset);
+    nanoexif_ifd_entry * entries = malloc(sizeof(nanoexif_ifd_entry)* (*cnt));
+    if (!entries) { return NULL; }
+    memcpy(entries, ne->buf+offset+2, sizeof(nanoexif_ifd_entry)*(*cnt));
+    int i;
+    for (i=0; i<*cnt;i++) {
+        if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
+            entries[i].tag    = swap_endian_16(entries[i].tag);
+            entries[i].type   = swap_endian_16(entries[i].type);
+            entries[i].count  = swap_endian_32(entries[i].count);
+        }
     }
-    return read_16(ne->endian, ifdcntbuf);
+    uint32_t next_ifd_offset_pos = offset+2+sizeof(nanoexif_ifd_entry)*(*cnt);
+    *next = read_32(ne->endian, ne->buf+next_ifd_offset_pos);
+    return entries;
 }
 
-bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry) {
-    if (fread(entry, sizeof(nanoexif_ifd_entry), 1, ne->fp) != 1) {
-        D("cannot read\n");
-        return false;
-    }
-
-    if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
-        entry->tag    = swap_endian_16(entry->tag);
-        entry->type   = swap_endian_16(entry->type);
-        entry->count  = swap_endian_32(entry->count);
-    }
-    return true;
-}
-
-#define NE_SEEK(ne, offset_) (fseek(ne->fp, ne->offset+(offset_), SEEK_SET)==0)
+#define ENTRY_DATA_COPY(x, y, z) memcpy(x, ne->buf+y, z);
 
 uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint16_t)) {
@@ -185,20 +223,9 @@ uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *en
         return ret;
     } else {
         uint32_t offset = read_32(ne->endian, entry->offset);
-        long orig = ftell(ne->fp);
-        if (orig == -1) {
-            return NULL;
-        }
-        if (!NE_SEEK(ne, offset)) {
-            return NULL;
-        }
-
         uint16_t * buf = (uint16_t*)malloc(entry->count*sizeof(uint16_t));
         if (!buf) { return NULL; }
-        if (fread(buf, sizeof(uint16_t), entry->count, ne->fp) != entry->count) {
-            free(buf);
-            return NULL;
-        }
+        ENTRY_DATA_COPY(buf, offset, sizeof(uint16_t)*entry->count);
         if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
             uint16_t i;
             uint16_t* p = buf;
@@ -207,12 +234,10 @@ uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *en
                 p++;
             }
         }
-        if (fseek(ne->fp, orig, SEEK_SET) != 0) { // restore original pos
-            return NULL;
-        }
         return buf;
     }
 }
+
 
 uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint32_t)) {
@@ -222,20 +247,9 @@ uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *ent
         return ret;
     } else {
         uint32_t offset = read_32(ne->endian, entry->offset);
-        long orig = ftell(ne->fp);
-        if (orig == -1) {
-            return NULL;
-        }
-        if (!NE_SEEK(ne, offset)) {
-            return NULL;
-        }
-
         uint32_t * buf = (uint32_t*)malloc(entry->count*sizeof(uint32_t));
         if (!buf) { return NULL; }
-        if (fread(buf, sizeof(uint32_t), entry->count, ne->fp) != entry->count) {
-            free(buf);
-            return NULL;
-        }
+        ENTRY_DATA_COPY(buf, offset, sizeof(uint32_t)*entry->count);
         if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
             uint16_t i;
             uint32_t* p = (uint32_t*)buf;
@@ -243,9 +257,6 @@ uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *ent
                 *p = swap_endian_32(*p);
                 p++;
             }
-        }
-        if (fseek(ne->fp, orig, SEEK_SET) != 0) { // restore original pos
-            return NULL;
         }
         return buf;
     }
@@ -262,23 +273,9 @@ char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry
         return ret;
     } else {
         uint32_t offset = read_32(ne->endian, entry->offset);
-        long orig = ftell(ne->fp);
-        if (orig == -1) {
-            return NULL;
-        }
-        if (!NE_SEEK(ne, offset)) {
-            return NULL;
-        }
-
         char * buf = (char*)malloc(entry->count);
         if (!buf) { return NULL; }
-        if (fread(buf, 1, entry->count, ne->fp) != entry->count) {
-            free(buf);
-            return NULL;
-        }
-        if (fseek(ne->fp, orig, SEEK_SET) != 0) { // restore original pos
-            return NULL;
-        }
+        ENTRY_DATA_COPY(buf, offset, entry->count);
         return buf;
     }
 }
@@ -286,20 +283,9 @@ char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry
 uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry *entry) {
     /* rational's minimal size is 8 bytes.cannot put on the offset. */
     uint32_t offset = read_32(ne->endian, entry->offset);
-    long orig = ftell(ne->fp);
-    if (orig == -1) {
-        return NULL;
-    }
-    if (!NE_SEEK(ne, offset)) {
-        return NULL;
-    }
-
     char * buf = (char*)malloc(entry->count*sizeof(uint32_t)*2);
     if (!buf) { return NULL; }
-    if (fread(buf, sizeof(uint32_t), entry->count*2, ne->fp) != entry->count*2) {
-        free(buf);
-        return NULL;
-    }
+    ENTRY_DATA_COPY(buf, offset, sizeof(uint32_t)*entry->count);
     if (NANOEXIF_MACHINE_ENDIAN != ne->endian) {
         uint16_t i;
         uint32_t* p = (uint32_t*)buf;
@@ -308,35 +294,6 @@ uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry
             p++;
         }
     }
-    if (fseek(ne->fp, orig, SEEK_SET) != 0) { // restore original pos
-        free(buf);
-        return NULL;
-    }
     return (uint32_t*)buf;
-}
-
-/**
- * @return -1: cannot read skip bytes
- *         -2: cannot seek
- *          0: nothing next ifd
- *          1: skipped
- */
-int nanoexif_skip_ifd_body(nanoexif *ne) {
-    uint8_t lenbuf[4];
-    if (fread(lenbuf, sizeof(char), sizeof(lenbuf), ne->fp) != sizeof(lenbuf)) {
-        D("cannot read 3\n");
-        return -1;
-    }
-    uint32_t skip = read_32(ne->endian, lenbuf);
-    if (skip != 0) {
-        if (fseek(ne->fp, ne->offset+skip, SEEK_SET) != 0) {
-            perror("WHY");
-            D("cannot seek 4\n");
-            return -2;
-        }
-        return skip;
-    } else {
-        return 0; // nothing next ifd
-    }
 }
 

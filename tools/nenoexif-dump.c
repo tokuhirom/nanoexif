@@ -3,101 +3,78 @@
 #include <assert.h>
 #include <stdlib.h>
 
-static inline uint32_t read_32(nanoexif_endian endian, const uint8_t *buf) {
-    if (endian == NANOEXIF_LITTLE_ENDIAN) {
-        return (buf[3]<<24) | (buf[2]<<16) | (buf[1]<<8) | buf[0];
-    } else {
-        return (buf[0]<<24) | (buf[1]<<16) | (buf[2]<<8) | buf[3];
-    }
-}
+bool dump(nanoexif *ne, int level, uint32_t ifd_offset) {
+    int32_t next_offset;
 
-bool dump(nanoexif *ne, int level) {
-    uint16_t cnt = nanoexif_read_ifd_cnt(ne);
-    uint16_t i;
-    for (i=0; i<cnt; i++) {
-        nanoexif_ifd_entry entry;
-        assert(nanoexif_read_ifd_entry(ne, &entry));
-        const char * tag = nanoexif_tag_name(entry.tag);
-        int j;
-        for (j=0; j<level*3+1; j++) {
-            printf("-");
-        }
-        printf(" tag: 0x%04X(%s), type:%d, count:%d\n", entry.tag, tag ? tag : "(null)", entry.type, entry.count);
-        switch (entry.type) {
-        case NANOEXIF_TYPE_RATIONAL:
-            {
-                uint32_t *x = nanoexif_get_ifd_entry_data_rational(ne, &entry);
-                assert(x);
-                uint16_t j;
-                for (j=0; j<entry.count*2; j+=2) {
-                    printf("  %d/%d\n", x[j], x[j+1]);
+    do {
+        uint16_t cnt;
+        nanoexif_ifd_entry* entries = nanoexif_read_ifd(ne, ifd_offset, &next_offset, &cnt);
+        printf("tag cnt: %d, next offset: %d\n", cnt, next_offset);
+        uint16_t i;
+        for (i=0; i<cnt; i++) {
+            const char * tag = nanoexif_tag_name(entries[i].tag);
+            int j;
+            for (j=0; j<level*3+1; j++) {
+                printf("-");
+            }
+            printf(" tag: 0x%04X(%s), type:%d, count:%d\n", entries[i].tag, tag ? tag : "(null)", entries[i].type, entries[i].count);
+            switch (entries[i].type) {
+            case NANOEXIF_TYPE_RATIONAL:
+                {
+                    uint32_t *x = nanoexif_get_ifd_entry_data_rational(ne, &entries[i]);
+                    assert(x);
+                    uint16_t j;
+                    for (j=0; j<entries[i].count*2; j+=2) {
+                        printf("  %d/%d\n", x[j], x[j+1]);
+                    }
+                    free(x);
                 }
-                free(x);
-            }
-            break;
-        case NANOEXIF_TYPE_ASCII: // 2
-            {
-                char *x = nanoexif_get_ifd_entry_data_ascii(ne, &entry);
-                assert(x);
-                printf("  %s\n", x); // x is null terminated.
-                free(x);
-            }
-            break;
-        case NANOEXIF_TYPE_SHORT:
-            {
-                uint16_t *x = nanoexif_get_ifd_entry_data_short(ne, &entry);
-                assert(x);
-                uint16_t j;
-                for (j=0;j<entry.count; j++) {
-                    printf("  %d\n", x[j]);
+                break;
+            case NANOEXIF_TYPE_ASCII: // 2
+                {
+                    char *x = nanoexif_get_ifd_entry_data_ascii(ne, &entries[i]);
+                    assert(x);
+                    printf("  %s\n", x); // x is null terminated.
+                    free(x);
                 }
-                free(x);
-            }
-            break;
-        case NANOEXIF_TYPE_LONG:
-            {
-                uint32_t *x = nanoexif_get_ifd_entry_data_long(ne, &entry);
-                assert(x);
-                uint16_t j;
-                for (j=0;j<entry.count; j++) {
-                    printf("  %d\n", x[j]);
+                break;
+            case NANOEXIF_TYPE_SHORT:
+                {
+                    uint16_t *x = nanoexif_get_ifd_entry_data_short(ne, &entries[i]);
+                    assert(x);
+                    uint16_t j;
+                    for (j=0;j<entries[i].count; j++) {
+                        printf("  %d\n", x[j]);
+                    }
+                    free(x);
                 }
-                free(x);
-            }
-            break;
-        default:
-            printf("UNKNOWN type: %d\n", entry.type);
-            break;
-        }
-        if (entry.tag == NANOEXIF_TAG_EXIF_OFFSET || entry.tag == NANOEXIF_TAG_GPS_INFO) { // has sub id 
-            uint32_t * x = nanoexif_get_ifd_entry_data_long(ne, &entry);
-            assert(x);
-            uint32_t offset = *x;
-            free(x);
-
-            long orig = ftell(ne->fp);
-            if (orig == -1) {
-                return false;
-            }
-            if (fseek(ne->fp, ne->offset+(offset), SEEK_SET)!=0) {
-                printf("err\n");
+                break;
+            case NANOEXIF_TYPE_LONG:
+                {
+                    uint32_t *x = nanoexif_get_ifd_entry_data_long(ne, &entries[i]);
+                    assert(x);
+                    uint16_t j;
+                    for (j=0;j<entries[i].count; j++) {
+                        printf("  %d\n", x[j]);
+                    }
+                    free(x);
+                }
+                break;
+            default:
+                printf("UNKNOWN type: %d\n", entries[i].type);
                 break;
             }
-            dump(ne, level+1);
+            if (entries[i].tag == NANOEXIF_TAG_EXIF_OFFSET || entries[i].tag == NANOEXIF_TAG_GPS_INFO) { // has sub id 
+                uint32_t * x = nanoexif_get_ifd_entry_data_long(ne, &entries[i]);
+                assert(x);
+                uint32_t offset = *x;
+                free(x);
 
-            if (fseek(ne->fp, orig, SEEK_SET)!=0) { // restore
-                printf("oops\n");
-                return false;
+                dump(ne, level+1, offset);
             }
         }
-    }
-    int ret = nanoexif_skip_ifd_body(ne);
-    assert(ret >= 0);
-    if (ret == 0) { // finished
-        return false;
-    } else {
-        return true;
-    }
+        ifd_offset = next_offset;
+    } while (next_offset != 0);
 }
 
 int main(int argc, char **argv) {
@@ -108,11 +85,11 @@ int main(int argc, char **argv) {
 
     FILE * fp = fopen(argv[1], "rb");
     assert(fp);
-    nanoexif * ne = nanoexif_init(fp);
+    uint32_t ifd_offset;
+    nanoexif * ne = nanoexif_init(fp, &ifd_offset);
+    printf("offset: %d\n", ifd_offset);
     assert(ne);
-    while (dump(ne, 0)) {
-        ; // nop
-    }
+    dump(ne, 0, ifd_offset);
     nanoexif_free(ne);
     fclose(fp);
     return 0;
