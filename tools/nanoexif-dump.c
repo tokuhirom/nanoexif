@@ -3,8 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-bool dump(nanoexif *ne, int level, uint32_t ifd_offset) {
-    int32_t next_offset;
+void dump(nanoexif *ne, int level, uint32_t ifd_offset) {
+    uint32_t next_offset;
 
     do {
         uint16_t cnt;
@@ -89,7 +89,9 @@ int main(int argc, char **argv) {
     nanoexif * ne = nanoexif_init(fp, &ifd_offset);
     printf("offset: %d\n", ifd_offset);
     assert(ne);
+
     dump(ne, 0, ifd_offset);
+
     nanoexif_free(ne);
     fclose(fp);
     return 0;

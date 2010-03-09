@@ -85,7 +85,7 @@ static inline uint32_t swap_endian_32(uint32_t i) {
     return ((i&0x000000ff)<<24) | ((i&0x0000ff00)<<8) | ((i&0x00ff0000)>>8) | ((i&0xff000000)>>24);
 }
 
-static inline nanoexif * parse_app1(FILE * fp, uint16_t app1_len, uint32_t * ifd_offset) {
+static inline nanoexif * parse_app1(FILE * fp, size_t app1_len, uint32_t * ifd_offset) {
     if (app1_len < 6) { return NULL; }
 
     // check exif header
