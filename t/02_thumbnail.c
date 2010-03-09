@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
 
     char * thumb = nanoexif_easy_thumbnail(fp, &orientation, &jpeg_byte_count);
     ok(!!thumb, "thumb");
+    ok( orientation == 6, "orientation = 6");
     ok(memcmp(thumb, "\xFF\xD8", 2)==0, "jpeg soi");
     ok(memcmp(thumb+(jpeg_byte_count-2), "\xFF\xD9", 2)==0, "jpeg eoi");
     free(thumb);
