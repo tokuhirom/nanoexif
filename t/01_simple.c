@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     assert(ne);
 
     // read ifd0
-    uint16_t *orientation = NULL;
+    uint16_t orientation = 0;
     {
         uint16_t ifd_entry_cnt = nanoexif_read_ifd_cnt(ne);
         int i;
@@ -33,7 +33,9 @@ int main(int argc, char **argv) {
             switch (entry.tag) {
             case NANOEXIF_TAG_ORIENTATION:
                 assert(entry.type == NANOEXIF_TYPE_SHORT);
-                orientation = nanoexif_get_ifd_entry_data_short(ne, &entry);
+                uint16_t *x = nanoexif_get_ifd_entry_data_short(ne, &entry);
+                orientation = *x;
+                free(x);
                 break;
             case NANOEXIF_TAG_MAKE:
                 assert(entry.type == NANOEXIF_TYPE_ASCII);
