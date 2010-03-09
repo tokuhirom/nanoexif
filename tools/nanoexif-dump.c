@@ -1,4 +1,4 @@
-#include "../nanoexif.h"
+#include <nanoexif.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>

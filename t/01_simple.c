@@ -1,7 +1,7 @@
 #include "nanotap.h"
 #include <stdio.h>
 #include <assert.h>
-#include "../nanoexif.h"
+#include <nanoexif.h>
 
 #ifdef DEBUG
 #define D(...) printf(__VA_ARGS__);

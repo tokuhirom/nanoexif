@@ -7,10 +7,15 @@ clib_setup;
 my $endian = unpack("S", pack("C2", 0, 1)) == 1 ? "NANOEXIF_BIG_ENDIAN" : "NANOEXIF_LITTLE_ENDIAN";
 print "endian: $endian\n";
 
-my $e = env_for_c(CCFLAGS => "-DDEBUG -std=c99 -DNANOEXIF_MACHINE_ENDIAN=$endian");
+my @src = qw(src/nanoexif.c src/nanoexif-tagname.c);
+
+my $e = env_for_c(
+    CCFLAGS => "-DDEBUG -std=c99 -DNANOEXIF_MACHINE_ENDIAN=$endian",
+    CPPPATH => 'src/',
+);
 $e->enable_warnings;
-$e->test('t/01_simple', ['t/01_simple.c', 'nanoexif.c', 'nanoexif-tagname.c']);
-$e->program('./tools/nanoexif-dump', ['nanoexif.c', 'tools/nanoexif-dump.c', 'nanoexif-tagname.c']);
+$e->test('t/01_simple', ['t/01_simple.c', @src]);
+$e->program('./tools/nanoexif-dump', ['tools/nanoexif-dump.c', @src]);
 
 WriteAll();
 
