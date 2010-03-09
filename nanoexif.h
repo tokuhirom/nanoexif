@@ -26,6 +26,8 @@ THE SOFTWARE.
 */
 
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef enum {
     NANOEXIF_LITTLE_ENDIAN,
@@ -42,13 +44,16 @@ typedef struct {
 typedef struct {
     FILE *fp;
     nanoexif_endian endian;
+    uint32_t offset;
 } nanoexif;
 
-#define NANOEXIF_TAG_COMPRESSION        0x103
-#define NANOEXIF_TAG_MAKE               0x10f
-#define NANOEXIF_TAG_ORIENTATION        0x112
-#define NANOEXIF_TAG_JPEG_IF_OFFSET     0x201
-#define NANOEXIF_TAG_JPEG_IF_BYTE_COUNT 0x202
+#define NANOEXIF_TAG_COMPRESSION        0x0103
+#define NANOEXIF_TAG_MAKE               0x010f
+#define NANOEXIF_TAG_ORIENTATION        0x0112
+#define NANOEXIF_TAG_JPEG_IF_OFFSET     0x0201
+#define NANOEXIF_TAG_JPEG_IF_BYTE_COUNT 0x0202
+#define NANOEXIF_TAG_EXIF_OFFSET        0x8769
+#define NANOEXIF_TAG_GPS_INFO           0x8825
 
 #define NANOEXIF_TYPE_BYTE      0x0001
 #define NANOEXIF_TYPE_ASCII     0x0002
@@ -63,13 +68,18 @@ typedef struct {
 #define NANOEXIF_TYPE_FLOAT     0x000b
 #define NANOEXIF_TYPE_DFLOAT    0x000c
 
+#define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)
+
 nanoexif * nanoexif_init(FILE *fp);
 void nanoexif_free(nanoexif * ne);
 uint16_t nanoexif_read_ifd_cnt(nanoexif * ne);
 bool nanoexif_read_ifd_entry(nanoexif *ne, nanoexif_ifd_entry *entry);
-uint16_t nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry);
+uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry);
 char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry);
-uint32_t nanoexif_skip_ifd_body(nanoexif *ne);
+uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry *entry);
+uint32_t * nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry);
+int nanoexif_skip_ifd_body(nanoexif *ne);
+const char *nanoexif_tag_name(uint32_t n);
 
 #endif  // NANOEXIF_H__
 

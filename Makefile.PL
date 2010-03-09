@@ -7,7 +7,8 @@ print "endian: $endian\n";
 
 my $e = env_for_c();
 $e->enable_warnings;
-$e->test('./nanoexif', ['nanoexif.c'], CCFLAGS => "-DTEST -DDEBUG -std=c99 -DNANOEXIF_MACHINE_ENDIAN=$endian");
+$e->test('t/01_simple', ['t/01_simple.c', 'nanoexif.c', 'nanoexif-tagname.c'], CCFLAGS => "-DDEBUG -std=c99 -DNANOEXIF_MACHINE_ENDIAN=$endian");
+$e->program('./tools/nanoexif-dump', ['nanoexif.c', 'tools/nenoexif-dump.c', 'nanoexif-tagname.c'], CCFLAGS => "-DDEBUG -std=c99 -DNANOEXIF_MACHINE_ENDIAN=$endian");
 
 WriteAll();
 

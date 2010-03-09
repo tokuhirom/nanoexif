@@ -3,3 +3,6 @@ a.out
 Makefile
 nanoexif
 inc/
+t/01_simple
+t/01_simple.t
+tools/nanoexif-dump
