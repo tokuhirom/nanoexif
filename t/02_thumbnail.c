@@ -18,6 +18,8 @@ int main(int argc, char **argv) {
     ok(memcmp(thumb+(jpeg_byte_count-2), "\xFF\xD9", 2)==0, "jpeg eoi");
     free(thumb);
 
+    fclose(fp);
+
     done_testing();
 }
 
