@@ -18,7 +18,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -38,18 +38,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="files.html"><span>File&nbsp;List</span></a></li>
-      <li><a href="globals.html"><span>Globals</span></a></li>
+      <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
     </ul>
   </div>
-<h1>src/nanoexif-easy.c</h1><a href="nanoexif-easy_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;<a class="code" href="nanoexif-easy_8h.html">nanoexif-easy.h</a>&gt;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;<a class="code" href="nanoexif_8h.html">nanoexif.h</a>&gt;</span>
+<h1>src/nanoexif-easy.c</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;nanoexif-easy.h&gt;</span>
+<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;nanoexif.h&gt;</span>
 <a name="l00003"></a>00003 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00005"></a>00005 <span class="preprocessor">#include &lt;string.h&gt;</span>
 <a name="l00006"></a>00006 
-<a name="l00013"></a><a class="code" href="nanoexif-easy_8h.html#a190455b3c4c7cb700fc0570755c096b0">00013</a> <span class="keywordtype">char</span> * <a class="code" href="nanoexif-easy_8c.html#a190455b3c4c7cb700fc0570755c096b0" title="FILE * fp: file pointer for reading exif  uint16_t * orientation: jpeg file orientation...">nanoexif_easy_thumbnail</a>(FILE * fp, uint16_t *orientation, uint32_t *jpeg_byte_count) {
+<a name="l00013"></a>00013 <span class="keywordtype">char</span> * nanoexif_easy_thumbnail(FILE * fp, uint16_t *orientation, uint32_t *jpeg_byte_count) {
 <a name="l00014"></a>00014     uint32_t ifd0_offset;
-<a name="l00015"></a>00015     <a class="code" href="structnanoexif.html">nanoexif</a> * ne = <a class="code" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e" title="initialize nanoexif struct.">nanoexif_init</a>(fp, &amp;ifd0_offset);
+<a name="l00015"></a>00015     <a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> * ne = <a class="code" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e" title="initialize nanoexif struct.">nanoexif_init</a>(fp, &amp;ifd0_offset);
 <a name="l00016"></a>00016     <span class="keywordflow">if</span> (!ne) { <span class="keywordflow">return</span> NULL; }
 <a name="l00017"></a>00017 
 <a name="l00018"></a>00018     <span class="comment">// initialize</span>
@@ -60,11 +60,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a>00023     uint32_t ifd1_offset;
 <a name="l00024"></a>00024     {
 <a name="l00025"></a>00025         uint16_t cnt;
-<a name="l00026"></a>00026         <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a>* entries = <a class="code" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6" title="read ifd entries">nanoexif_read_ifd</a>(ne, ifd0_offset, &amp;ifd1_offset, &amp;cnt);
+<a name="l00026"></a>00026         <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a>* entries = <a class="code" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6" title="read ifd entries">nanoexif_read_ifd</a>(ne, ifd0_offset, &amp;ifd1_offset, &amp;cnt);
 <a name="l00027"></a>00027         <span class="keywordtype">int</span> i;
 <a name="l00028"></a>00028         <span class="keywordflow">for</span> (i=0; i&lt;cnt; i++) {
 <a name="l00029"></a>00029             <span class="keywordflow">switch</span> (entries[i].tag) {
-<a name="l00030"></a>00030             <span class="keywordflow">case</span> <a class="code" href="nanoexif_8h.html#a199b3fd2f3d1346f263cdbbe9480249b">NANOEXIF_TAG_ORIENTATION</a>:
+<a name="l00030"></a>00030             <span class="keywordflow">case</span> NANOEXIF_TAG_ORIENTATION:
 <a name="l00031"></a>00031                 {
 <a name="l00032"></a>00032                     uint16_t *x = <a class="code" href="nanoexif_8c.html#a9e51ad2624cb10b882089fe46a9a4507" title="read short value from ifd entry">nanoexif_get_ifd_entry_data_short</a>(ne, &amp;entries[i]);
 <a name="l00033"></a>00033                     <span class="keywordflow">if</span> (!x) {
@@ -86,7 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00049"></a>00049     {
 <a name="l00050"></a>00050         uint16_t cnt;
 <a name="l00051"></a>00051         uint32_t ifd2_offset;
-<a name="l00052"></a>00052         <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a>* entries = <a class="code" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6" title="read ifd entries">nanoexif_read_ifd</a>(ne, ifd1_offset, &amp;ifd2_offset, &amp;cnt);
+<a name="l00052"></a>00052         <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a>* entries = <a class="code" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6" title="read ifd entries">nanoexif_read_ifd</a>(ne, ifd1_offset, &amp;ifd2_offset, &amp;cnt);
 <a name="l00053"></a>00053         <span class="keywordflow">if</span> (!entries) {
 <a name="l00054"></a>00054             <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2" title="destruct the struct nanoexif*.">nanoexif_free</a>(ne);
 <a name="l00055"></a>00055             <span class="keywordflow">return</span> NULL;
@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00060"></a>00060         uint32_t jpeg_offset     = 0;
 <a name="l00061"></a>00061         <span class="keywordflow">for</span> (i=0; i&lt;cnt; i++) {
 <a name="l00062"></a>00062             <span class="keywordflow">switch</span> (entries[i].tag) {
-<a name="l00063"></a>00063             <span class="keywordflow">case</span> <a class="code" href="nanoexif_8h.html#acc49ee98c8c3f38d2e12b7475d72e3a4">NANOEXIF_TAG_COMPRESSION</a>:
+<a name="l00063"></a>00063             <span class="keywordflow">case</span> NANOEXIF_TAG_COMPRESSION:
 <a name="l00064"></a>00064                 {
 <a name="l00065"></a>00065                     uint16_t * o = <a class="code" href="nanoexif_8c.html#a9e51ad2624cb10b882089fe46a9a4507" title="read short value from ifd entry">nanoexif_get_ifd_entry_data_short</a>(ne, &amp;entries[i]);
 <a name="l00066"></a>00066                     <span class="keywordflow">if</span> (!o) {
@@ -115,7 +115,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00078"></a>00078                     compression_ok = <span class="keyword">true</span>;
 <a name="l00079"></a>00079                     <span class="keywordflow">break</span>;
 <a name="l00080"></a>00080                 }
-<a name="l00081"></a>00081             <span class="keywordflow">case</span> <a class="code" href="nanoexif_8h.html#ae139f5301c012d5ee9a8a4e4a29338fe">NANOEXIF_TAG_JPEG_IF_OFFSET</a>:
+<a name="l00081"></a>00081             <span class="keywordflow">case</span> NANOEXIF_TAG_JPEG_IF_OFFSET:
 <a name="l00082"></a>00082                 {
 <a name="l00083"></a>00083                     uint32_t *offset = <a class="code" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f" title="ditto.">nanoexif_get_ifd_entry_data_long</a>(ne, &amp;entries[i]);
 <a name="l00084"></a>00084                     <span class="keywordflow">if</span> (!offset) {
@@ -127,7 +127,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00090"></a>00090                     free(offset);
 <a name="l00091"></a>00091                     <span class="keywordflow">break</span>;
 <a name="l00092"></a>00092                 }
-<a name="l00093"></a>00093             <span class="keywordflow">case</span> <a class="code" href="nanoexif_8h.html#afba729343470b9a1965be7c605581af1">NANOEXIF_TAG_JPEG_IF_BYTE_COUNT</a>:
+<a name="l00093"></a>00093             <span class="keywordflow">case</span> NANOEXIF_TAG_JPEG_IF_BYTE_COUNT:
 <a name="l00094"></a>00094                 {
 <a name="l00095"></a>00095                     uint32_t *offset = <a class="code" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f" title="ditto.">nanoexif_get_ifd_entry_data_long</a>(ne, &amp;entries[i]);
 <a name="l00096"></a>00096                     <span class="keywordflow">if</span> (!offset) {
@@ -153,7 +153,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00116"></a>00116             <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2" title="destruct the struct nanoexif*.">nanoexif_free</a>(ne);
 <a name="l00117"></a>00117             <span class="keywordflow">return</span> NULL;
 <a name="l00118"></a>00118         }
-<a name="l00119"></a>00119         memcpy(thumb, ne-&gt;<a class="code" href="structnanoexif.html#aaacc62306ae043d5565dd0268bbf5ab1">buf</a> + jpeg_offset, *jpeg_byte_count);
+<a name="l00119"></a>00119         memcpy(thumb, ne-&gt;buf + jpeg_offset, *jpeg_byte_count);
 <a name="l00120"></a>00120     }
 <a name="l00121"></a>00121 
 <a name="l00122"></a>00122     <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2" title="destruct the struct nanoexif*.">nanoexif_free</a>(ne);
@@ -165,7 +165,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -174,7 +174,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:10:33 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:28:04 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

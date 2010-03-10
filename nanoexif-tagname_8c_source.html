@@ -18,7 +18,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -38,13 +38,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="files.html"><span>File&nbsp;List</span></a></li>
-      <li><a href="globals.html"><span>Globals</span></a></li>
+      <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
     </ul>
   </div>
-<h1>src/nanoexif-tagname.c</h1><a href="nanoexif-tagname_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
+<h1>src/nanoexif-tagname.c</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00002"></a>00002 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00003"></a>00003 
-<a name="l00004"></a><a class="code" href="nanoexif_8h.html#ac58ec7902430ddaba113d9c94f655846">00004</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="nanoexif-tagname_8c.html#ac58ec7902430ddaba113d9c94f655846">nanoexif_tag_name</a>(uint32_t n) {
+<a name="l00004"></a>00004 <span class="keyword">const</span> <span class="keywordtype">char</span> *nanoexif_tag_name(uint32_t n) {
 <a name="l00005"></a>00005     <span class="keywordflow">switch</span> (n) {
 <a name="l00006"></a>00006     <span class="keywordflow">case</span> 0x0001: <span class="keywordflow">return</span> <span class="stringliteral">&quot;InteropIndex&quot;</span>;
 <a name="l00007"></a>00007     <span class="keywordflow">case</span> 0x0002: <span class="keywordflow">return</span> <span class="stringliteral">&quot;InteropVersion&quot;</span>;
@@ -413,7 +413,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -422,7 +422,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:10:33 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:28:04 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

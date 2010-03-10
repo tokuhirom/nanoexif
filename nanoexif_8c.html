@@ -18,7 +18,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -38,7 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="files.html"><span>File&nbsp;List</span></a></li>
-      <li><a href="globals.html"><span>Globals</span></a></li>
+      <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -49,80 +49,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;stdbool.h&gt;</code><br/>
 <code>#include &lt;assert.h&gt;</code><br/>
-<code>#include &quot;<a class="el" href="nanoexif_8h_source.html">nanoexif.h</a>&quot;</code><br/>
+<code>#include &quot;nanoexif.h&quot;</code><br/>
 
 <p><a href="nanoexif_8c_source.html">Go to the source code of this file.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a74021f021dcdfbb22891787b79c5529d">D</a>(...)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aa865f4894bdecea7b61154dfa2674f47">ENTRY_DATA_COPY</a>(x, y, z)&nbsp;&nbsp;&nbsp;memcpy(x, ne-&gt;buf+y, z);</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74021f021dcdfbb22891787b79c5529d"></a><!-- doxytag: member="nanoexif.c::D" ref="a74021f021dcdfbb22891787b79c5529d" args="(...)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>D</b>(...)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa865f4894bdecea7b61154dfa2674f47"></a><!-- doxytag: member="nanoexif.c::ENTRY_DATA_COPY" ref="aa865f4894bdecea7b61154dfa2674f47" args="(x, y, z)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>ENTRY_DATA_COPY</b>(x, y, z)&nbsp;&nbsp;&nbsp;memcpy(x, ne-&gt;buf+y, z);</td></tr>
 <tr><td colspan="2"><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnanoexif.html">nanoexif</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e">nanoexif_init</a> (FILE *fp, uint32_t *ifd_offset)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">initialize <a class="el" href="structnanoexif.html">nanoexif</a> struct.  <a href="#a1f92f99536c624d1239e03d2d4edeb4e"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">initialize <a class="el" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> struct.  <a href="#a1f92f99536c624d1239e03d2d4edeb4e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2">nanoexif_free</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">destruct the struct nanoexif*.  <a href="#a6319cd45f6bdeee3636471aced579fe2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6">nanoexif_read_ifd</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, uint16_t offset, uint32_t *next_offset, uint16_t *cnt)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">read ifd entries  <a href="#aad622e64226c587c232a5b502a6bdee6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">uint16_t *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a9e51ad2624cb10b882089fe46a9a4507">nanoexif_get_ifd_entry_data_short</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">read short value from ifd entry  <a href="#a9e51ad2624cb10b882089fe46a9a4507"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint32_t *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f">nanoexif_get_ifd_entry_data_long</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto.  <a href="#aaa39325284e3b6e61488a29bf0c9163f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aa85d11303ec5c826dac25f28cff940e5">nanoexif_get_ifd_entry_data_ascii</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto.  <a href="#aa85d11303ec5c826dac25f28cff940e5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">uint32_t *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a37654595708f0028dcd7c738b14d6837">nanoexif_get_ifd_entry_data_rational</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto.  <a href="#a37654595708f0028dcd7c738b14d6837"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa39325284e3b6e61488a29bf0c9163f"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_long" ref="aaa39325284e3b6e61488a29bf0c9163f" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
+uint32_t *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f">nanoexif_get_ifd_entry_data_long</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa85d11303ec5c826dac25f28cff940e5"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_ascii" ref="aa85d11303ec5c826dac25f28cff940e5" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
+char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#aa85d11303ec5c826dac25f28cff940e5">nanoexif_get_ifd_entry_data_ascii</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37654595708f0028dcd7c738b14d6837"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_rational" ref="a37654595708f0028dcd7c738b14d6837" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
+uint32_t *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif_8c.html#a37654595708f0028dcd7c738b14d6837">nanoexif_get_ifd_entry_data_rational</a> (<a class="el" href="structnanoexif.html">nanoexif</a> *ne, <a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ditto. <br/></td></tr>
 </table>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a74021f021dcdfbb22891787b79c5529d"></a><!-- doxytag: member="nanoexif.c::D" ref="a74021f021dcdfbb22891787b79c5529d" args="(...)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define D</td>
-          <td>(</td>
-          <td class="paramtype"> <em>...</em>&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
 
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00057">57</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa865f4894bdecea7b61154dfa2674f47"></a><!-- doxytag: member="nanoexif.c::ENTRY_DATA_COPY" ref="aa865f4894bdecea7b61154dfa2674f47" args="(x, y, z)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ENTRY_DATA_COPY</td>
-          <td>(</td>
-          <td class="paramtype">x, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">y, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">z&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;memcpy(x, ne-&gt;buf+y, z);</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00226">226</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
-
-</div>
-</div>
+<p>Definition in file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a6319cd45f6bdeee3636471aced579fe2"></a><!-- doxytag: member="nanoexif.c::nanoexif_free" ref="a6319cd45f6bdeee3636471aced579fe2" args="(nanoexif *ne)" -->
 <div class="memitem">
@@ -148,100 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00192">192</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa85d11303ec5c826dac25f28cff940e5"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_ascii" ref="aa85d11303ec5c826dac25f28cff940e5" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* nanoexif_get_ifd_entry_data_ascii </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structnanoexif.html">nanoexif</a> *&nbsp;</td>
-          <td class="paramname"> <em>ne</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *&nbsp;</td>
-          <td class="paramname"> <em>entry</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>ditto. </p>
-
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00289">289</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaa39325284e3b6e61488a29bf0c9163f"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_long" ref="aaa39325284e3b6e61488a29bf0c9163f" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t* nanoexif_get_ifd_entry_data_long </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structnanoexif.html">nanoexif</a> *&nbsp;</td>
-          <td class="paramname"> <em>ne</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *&nbsp;</td>
-          <td class="paramname"> <em>entry</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>ditto. </p>
-
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00264">264</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a37654595708f0028dcd7c738b14d6837"></a><!-- doxytag: member="nanoexif.c::nanoexif_get_ifd_entry_data_rational" ref="a37654595708f0028dcd7c738b14d6837" args="(nanoexif *ne, nanoexif_ifd_entry *entry)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t* nanoexif_get_ifd_entry_data_rational </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structnanoexif.html">nanoexif</a> *&nbsp;</td>
-          <td class="paramname"> <em>ne</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *&nbsp;</td>
-          <td class="paramname"> <em>entry</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>ditto. </p>
-
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00306">306</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
+<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00196">196</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
 
 </div>
 </div>
@@ -273,15 +137,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>read short value from ifd entry </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>nanoeixf</em>&nbsp;</td><td>* ne: pointer for struct <a class="el" href="structnanoexif.html">nanoexif</a>. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a></em>&nbsp;</td><td>* entry </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>nanoeixf</em>&nbsp;</td><td>* ne: pointer for struct <a class="el" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a>. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a></em>&nbsp;</td><td>* entry </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>array of uint16_t.return NULL if error occurred.</dd></dl>
 <p>You should free(2) the return value, after used. </p>
 
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00235">235</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
+<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00239">239</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
 
 </div>
 </div>
@@ -310,7 +174,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="memdoc">
 
-<p>initialize <a class="el" href="structnanoexif.html">nanoexif</a> struct. </p>
+<p>initialize <a class="el" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> struct. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>FILE</em>&nbsp;</td><td>* fp: file pointer for reading exif </td></tr>
@@ -318,10 +182,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer of struct <a class="el" href="structnanoexif.html">nanoexif</a> if succeeded, return NULL otherwise.</dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer of struct <a class="el" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> if succeeded, return NULL otherwise.</dd></dl>
 <p>You should call nanoexif_free(ne) if return value is not null. </p>
 
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00144">144</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
+<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00148">148</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
 
 </div>
 </div>
@@ -365,7 +229,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>read ifd entries </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>nanoeixf</em>&nbsp;</td><td>* ne: pointer for struct <a class="el" href="structnanoexif.html">nanoexif</a>. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>nanoeixf</em>&nbsp;</td><td>* ne: pointer for struct <a class="el" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a>. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>uint16_t</em>&nbsp;</td><td>offset: offset for the ifd entry </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>uint32_t</em>&nbsp;</td><td>*next_offset: offset for the next ifd entry will be set. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>uint16_t</em>&nbsp;</td><td>* cnt: count of entries will be set. </td></tr>
@@ -375,7 +239,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <dl class="return"><dt><b>Returns:</b></dt><dd>array of nanoeixf_ifd_entry.the number of elements will set to argument 'cnt'.return NULL if error occurred.</dd></dl>
 <p>You should call free(entries), after use it. </p>
 
-<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00208">208</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
+<p>Definition at line <a class="el" href="nanoexif_8c_source.html#l00212">212</a> of file <a class="el" href="nanoexif_8c_source.html">nanoexif.c</a>.</p>
 
 </div>
 </div>
@@ -385,7 +249,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -394,7 +258,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:10:33 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:28:05 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
