@@ -42,7 +42,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
-<h1>src/nanoexif.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef NANOEXIF_H__</span>
+<h1>src/nanoexif.h</h1><a href="nanoexif_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef NANOEXIF_H__</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_H__</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="comment">/*</span>
@@ -73,47 +73,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a>00029 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00030"></a>00030 <span class="preprocessor">#include &lt;stdbool.h&gt;</span>
 <a name="l00031"></a>00031 
-<a name="l00035"></a>00035 <span class="keyword">typedef</span> <span class="keyword">enum</span> {
-<a name="l00036"></a>00036     NANOEXIF_LITTLE_ENDIAN,
-<a name="l00037"></a>00037     NANOEXIF_BIG_ENDIAN,
-<a name="l00038"></a>00038 } nanoexif_endian;
+<a name="l00035"></a><a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804d">00035</a> <span class="keyword">typedef</span> <span class="keyword">enum</span> {
+<a name="l00036"></a><a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804da25fbf64066f021e11124f6d542ff8be8">00036</a>     <a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804da25fbf64066f021e11124f6d542ff8be8">NANOEXIF_LITTLE_ENDIAN</a>,
+<a name="l00037"></a><a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804dab5b294cc6bbf226807479b1a07ae461c">00037</a>     <a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804dab5b294cc6bbf226807479b1a07ae461c">NANOEXIF_BIG_ENDIAN</a>,
+<a name="l00038"></a>00038 } <a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804d" title="enum nanoexif_endian describe the endian.">nanoexif_endian</a>;
 <a name="l00039"></a>00039 
 <a name="l00043"></a><a class="code" href="structnanoexif__ifd__entry.html">00043</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00044"></a>00044     uint16_t tag;
-<a name="l00045"></a>00045     uint16_t type;
-<a name="l00046"></a>00046     uint32_t count;
-<a name="l00047"></a>00047     uint8_t  offset[4];
+<a name="l00044"></a><a class="code" href="structnanoexif__ifd__entry.html#a181cfc436d3d6b79eab08c1db36bf995">00044</a>     uint16_t tag;
+<a name="l00045"></a><a class="code" href="structnanoexif__ifd__entry.html#ab61e51128c4749d3c0977c1e4d6da62d">00045</a>     uint16_t type;
+<a name="l00046"></a><a class="code" href="structnanoexif__ifd__entry.html#a7a9daa831203bcb81d87a13f25f8f3a6">00046</a>     uint32_t count;
+<a name="l00047"></a><a class="code" href="structnanoexif__ifd__entry.html#a45888875cfd70f5c72f3373788c0a3c9">00047</a>     uint8_t  offset[4];
 <a name="l00048"></a>00048 } <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a>;
 <a name="l00049"></a>00049 
 <a name="l00053"></a><a class="code" href="structnanoexif.html">00053</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00054"></a>00054     FILE *fp;
-<a name="l00055"></a>00055     nanoexif_endian endian;
-<a name="l00056"></a>00056     uint8_t * buf;
-<a name="l00057"></a>00057     <span class="keywordtype">size_t</span> offset;
+<a name="l00054"></a><a class="code" href="structnanoexif.html#a5b1fd1bc58259f8d671b838a9b5b7950">00054</a>     FILE *fp;
+<a name="l00055"></a><a class="code" href="structnanoexif.html#a12189d11731f5e8baf7c803e892e2690">00055</a>     <a class="code" href="nanoexif_8h.html#a799ab2a10b3c88cd1ff502ddd73f804d" title="enum nanoexif_endian describe the endian.">nanoexif_endian</a> endian;
+<a name="l00056"></a><a class="code" href="structnanoexif.html#aaacc62306ae043d5565dd0268bbf5ab1">00056</a>     uint8_t * buf;
+<a name="l00057"></a><a class="code" href="structnanoexif.html#ae5291434b332f47d168c37a3c0208eb5">00057</a>     <span class="keywordtype">size_t</span> offset;
 <a name="l00058"></a>00058 } <a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a>;
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="preprocessor">#define NANOEXIF_TAG_COMPRESSION        0x0103</span>
-<a name="l00061"></a>00061 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_MAKE               0x010f</span>
-<a name="l00062"></a>00062 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_ORIENTATION        0x0112</span>
-<a name="l00063"></a>00063 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_JPEG_IF_OFFSET     0x0201</span>
-<a name="l00064"></a>00064 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_JPEG_IF_BYTE_COUNT 0x0202</span>
-<a name="l00065"></a>00065 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_EXIF_OFFSET        0x8769</span>
-<a name="l00066"></a>00066 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_GPS_INFO           0x8825</span>
+<a name="l00060"></a><a class="code" href="nanoexif_8h.html#acc49ee98c8c3f38d2e12b7475d72e3a4">00060</a> <span class="preprocessor">#define NANOEXIF_TAG_COMPRESSION        0x0103</span>
+<a name="l00061"></a><a class="code" href="nanoexif_8h.html#abb4c77866e679f280290b23e3fc4e6aa">00061</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_MAKE               0x010f</span>
+<a name="l00062"></a><a class="code" href="nanoexif_8h.html#a199b3fd2f3d1346f263cdbbe9480249b">00062</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_ORIENTATION        0x0112</span>
+<a name="l00063"></a><a class="code" href="nanoexif_8h.html#ae139f5301c012d5ee9a8a4e4a29338fe">00063</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_JPEG_IF_OFFSET     0x0201</span>
+<a name="l00064"></a><a class="code" href="nanoexif_8h.html#afba729343470b9a1965be7c605581af1">00064</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_JPEG_IF_BYTE_COUNT 0x0202</span>
+<a name="l00065"></a><a class="code" href="nanoexif_8h.html#aec63495ddea6d29080ad9df887adeebe">00065</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_EXIF_OFFSET        0x8769</span>
+<a name="l00066"></a><a class="code" href="nanoexif_8h.html#a2ef4aeadf3c7b0ff305d6a3e7a19298d">00066</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TAG_GPS_INFO           0x8825</span>
 <a name="l00067"></a>00067 <span class="preprocessor"></span>
-<a name="l00068"></a>00068 <span class="preprocessor">#define NANOEXIF_TYPE_BYTE      0x0001</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_ASCII     0x0002</span>
-<a name="l00070"></a>00070 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SHORT     0x0003</span>
-<a name="l00071"></a>00071 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_LONG      0x0004</span>
-<a name="l00072"></a>00072 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_RATIONAL  0x0005</span>
-<a name="l00073"></a>00073 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SBYTE     0x0006</span>
-<a name="l00074"></a>00074 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_UNDEFINED 0x0007</span>
-<a name="l00075"></a>00075 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SSHORT    0x0008</span>
-<a name="l00076"></a>00076 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SLONG     0x0009</span>
-<a name="l00077"></a>00077 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SRATIONAL 0x000a</span>
-<a name="l00078"></a>00078 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_FLOAT     0x000b</span>
-<a name="l00079"></a>00079 <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_DFLOAT    0x000c</span>
+<a name="l00068"></a><a class="code" href="nanoexif_8h.html#a5d9c3c034bfcbb7931fc8338b715deaa">00068</a> <span class="preprocessor">#define NANOEXIF_TYPE_BYTE      0x0001</span>
+<a name="l00069"></a><a class="code" href="nanoexif_8h.html#a4f7221f0fde4799b5b231f9845b94a0a">00069</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_ASCII     0x0002</span>
+<a name="l00070"></a><a class="code" href="nanoexif_8h.html#a54c8b18bdd0c24e7783e9c87ddfbe135">00070</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SHORT     0x0003</span>
+<a name="l00071"></a><a class="code" href="nanoexif_8h.html#a2246a1b1201d09462f5e4b4bed230ce9">00071</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_LONG      0x0004</span>
+<a name="l00072"></a><a class="code" href="nanoexif_8h.html#ad67ea62cf5f1c54c055b0d4ef3f04f3f">00072</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_RATIONAL  0x0005</span>
+<a name="l00073"></a><a class="code" href="nanoexif_8h.html#a05547fbcd8d5099c346df094fded9962">00073</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SBYTE     0x0006</span>
+<a name="l00074"></a><a class="code" href="nanoexif_8h.html#acc72f2c31878eec616292bc7c30defca">00074</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_UNDEFINED 0x0007</span>
+<a name="l00075"></a><a class="code" href="nanoexif_8h.html#ad819625bafe85f47389660a036a5cec3">00075</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SSHORT    0x0008</span>
+<a name="l00076"></a><a class="code" href="nanoexif_8h.html#af6bbe9b7640090a7332893fe205f8d11">00076</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SLONG     0x0009</span>
+<a name="l00077"></a><a class="code" href="nanoexif_8h.html#a0efe3db8c5c5db2911c0916d6238bbc2">00077</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_SRATIONAL 0x000a</span>
+<a name="l00078"></a><a class="code" href="nanoexif_8h.html#a598dce5c55b65d0108918ac8fbcea9c2">00078</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_FLOAT     0x000b</span>
+<a name="l00079"></a><a class="code" href="nanoexif_8h.html#a398e96d755a982a2f3905d3216c93c08">00079</a> <span class="preprocessor"></span><span class="preprocessor">#define NANOEXIF_TYPE_DFLOAT    0x000c</span>
 <a name="l00080"></a>00080 <span class="preprocessor"></span>
-<a name="l00081"></a>00081 <span class="preprocessor">#define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)</span>
+<a name="l00081"></a><a class="code" href="nanoexif_8h.html#ad4510a680bda85619723f7cfe68fef44">00081</a> <span class="preprocessor">#define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)</span>
 <a name="l00082"></a>00082 <span class="preprocessor"></span>
 <a name="l00083"></a>00083 <a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> * <a class="code" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e" title="initialize nanoexif struct.">nanoexif_init</a>(FILE *fp, uint32_t *ifd_offset);
 <a name="l00084"></a>00084 <span class="keywordtype">void</span> <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2" title="destruct the struct nanoexif*.">nanoexif_free</a>(<a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> * ne);
@@ -122,7 +122,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00087"></a>00087 <span class="keywordtype">char</span> * <a class="code" href="nanoexif_8c.html#aa85d11303ec5c826dac25f28cff940e5" title="ditto.">nanoexif_get_ifd_entry_data_ascii</a>(<a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a> *entry);
 <a name="l00088"></a>00088 uint32_t * <a class="code" href="nanoexif_8c.html#a37654595708f0028dcd7c738b14d6837" title="ditto.">nanoexif_get_ifd_entry_data_rational</a>(<a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a> *entry);
 <a name="l00089"></a>00089 uint32_t * <a class="code" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f" title="ditto.">nanoexif_get_ifd_entry_data_long</a>(<a class="code" href="structnanoexif.html" title="struct nanoexif describe the exif(means APP1 segment).">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html" title="struct nanoexif_ifd_entry describe the IFD entry.">nanoexif_ifd_entry</a> *entry);
-<a name="l00090"></a>00090 <span class="keyword">const</span> <span class="keywordtype">char</span> *nanoexif_tag_name(uint32_t n);
+<a name="l00090"></a>00090 <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="nanoexif-tagname_8c.html#ac58ec7902430ddaba113d9c94f655846">nanoexif_tag_name</a>(uint32_t n);
 <a name="l00091"></a>00091 
 <a name="l00092"></a>00092 <span class="preprocessor">#endif  // NANOEXIF_H__</span>
 <a name="l00093"></a>00093 <span class="preprocessor"></span>
@@ -132,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -141,7 +141,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:46:28 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:47:35 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
