@@ -17,6 +17,7 @@ $e->enable_warnings;
 $e->test('t/01_simple', ['t/01_simple.c', @src]);
 $e->test('t/02_thumbnail', ['t/02_thumbnail.c', @src]);
 $e->program('./tools/nanoexif-dump', ['tools/nanoexif-dump.c', @src]);
+$e->program('./tools/nanoexif-thumbnail', ['tools/nanoexif-thumbnail.c', @src]);
 
 postambles(<<'...');
 docs: Doxyfile src/*.c src/*.h
