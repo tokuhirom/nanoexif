@@ -26,25 +26,12 @@ THE SOFTWARE.
  * @file nanoexif.c
  */
 
-/*
-
-LIMITATION
-----------
-
-This module supports C99. I don't want to support legacy systems, but I can accept your patch.
-
-*/
-
-
 /**
-
-@mainpage
-
-This is nanoexif's programmer's docs.
-
-If you want to know more details, please see http://github.com/tokuhirom/nanoexif
-
-*/
+ * \defgroup nanoexif
+ */
+/**
+ * @{
+ */
 
 #include <stdio.h>
 #include <stdint.h>
@@ -323,4 +310,18 @@ uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry
     }
     return (uint32_t*)buf;
 }
+
+/**
+ * @}
+ */
+
+/**
+
+@mainpage
+
+This is nanoexif's programmer's docs.
+
+If you want to know more details, please see http://github.com/tokuhirom/nanoexif
+
+*/
 
