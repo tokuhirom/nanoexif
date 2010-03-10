@@ -114,13 +114,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00071"></a>00071 <span class="preprocessor"></span>
 <a name="l00072"></a><a class="code" href="nanoexif_8h.html#ad4510a680bda85619723f7cfe68fef44">00072</a> <span class="preprocessor">#define NANOEXIF_EXIF_HEADER_SIZE (2+2+2+6+2+2+4)</span>
 <a name="l00073"></a>00073 <span class="preprocessor"></span>
-<a name="l00074"></a>00074 <a class="code" href="structnanoexif.html">nanoexif</a> * <a class="code" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e">nanoexif_init</a>(FILE *fp, uint32_t *ifd_offset);
-<a name="l00075"></a>00075 <span class="keywordtype">void</span> <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2">nanoexif_free</a>(<a class="code" href="structnanoexif.html">nanoexif</a> * ne);
-<a name="l00076"></a>00076 <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a>* <a class="code" href="nanoexif_8c.html#aed8a040dec1011e7b6746f120786a401">nanoexif_read_ifd</a>(<a class="code" href="structnanoexif.html">nanoexif</a> * ne, uint16_t offset, uint32_t * next, uint16_t * cnt);
-<a name="l00077"></a>00077 uint16_t *<a class="code" href="nanoexif_8c.html#a9e51ad2624cb10b882089fe46a9a4507">nanoexif_get_ifd_entry_data_short</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
-<a name="l00078"></a>00078 <span class="keywordtype">char</span> * <a class="code" href="nanoexif_8c.html#aa85d11303ec5c826dac25f28cff940e5">nanoexif_get_ifd_entry_data_ascii</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
-<a name="l00079"></a>00079 uint32_t * <a class="code" href="nanoexif_8c.html#a37654595708f0028dcd7c738b14d6837">nanoexif_get_ifd_entry_data_rational</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
-<a name="l00080"></a>00080 uint32_t * <a class="code" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f">nanoexif_get_ifd_entry_data_long</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
+<a name="l00074"></a>00074 <a class="code" href="structnanoexif.html">nanoexif</a> * <a class="code" href="nanoexif_8c.html#a1f92f99536c624d1239e03d2d4edeb4e" title="initialize nanoexif struct.">nanoexif_init</a>(FILE *fp, uint32_t *ifd_offset);
+<a name="l00075"></a>00075 <span class="keywordtype">void</span> <a class="code" href="nanoexif_8c.html#a6319cd45f6bdeee3636471aced579fe2" title="destruct the struct nanoexif*.">nanoexif_free</a>(<a class="code" href="structnanoexif.html">nanoexif</a> * ne);
+<a name="l00076"></a>00076 <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a>* <a class="code" href="nanoexif_8c.html#aad622e64226c587c232a5b502a6bdee6" title="read ifd entries  nanoeixf * ne: pointer for struct nanoexif.">nanoexif_read_ifd</a>(<a class="code" href="structnanoexif.html">nanoexif</a> * ne, uint16_t offset, uint32_t * next, uint16_t * cnt);
+<a name="l00077"></a>00077 uint16_t *<a class="code" href="nanoexif_8c.html#a9e51ad2624cb10b882089fe46a9a4507" title="read short value from ifd entry  nanoeixf * ne: pointer for struct nanoexif.">nanoexif_get_ifd_entry_data_short</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
+<a name="l00078"></a>00078 <span class="keywordtype">char</span> * <a class="code" href="nanoexif_8c.html#aa85d11303ec5c826dac25f28cff940e5" title="ditto.">nanoexif_get_ifd_entry_data_ascii</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
+<a name="l00079"></a>00079 uint32_t * <a class="code" href="nanoexif_8c.html#a37654595708f0028dcd7c738b14d6837" title="ditto.">nanoexif_get_ifd_entry_data_rational</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
+<a name="l00080"></a>00080 uint32_t * <a class="code" href="nanoexif_8c.html#aaa39325284e3b6e61488a29bf0c9163f" title="ditto.">nanoexif_get_ifd_entry_data_long</a>(<a class="code" href="structnanoexif.html">nanoexif</a> *ne, <a class="code" href="structnanoexif__ifd__entry.html">nanoexif_ifd_entry</a> *entry);
 <a name="l00081"></a>00081 <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="nanoexif-tagname_8c.html#ac58ec7902430ddaba113d9c94f655846">nanoexif_tag_name</a>(uint32_t n);
 <a name="l00082"></a>00082 
 <a name="l00083"></a>00083 <span class="preprocessor">#endif  // NANOEXIF_H__</span>
@@ -140,7 +140,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 10:43:58 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 10:57:58 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
