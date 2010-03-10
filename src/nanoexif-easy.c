@@ -5,6 +5,10 @@
 #include <string.h>
 
 /**
+ * @file nanoexif-easy.c
+ */
+
+/** fetch thumbnail from jpeg file.
  * @args FILE * fp: file pointer for reading exif
  * @args uint16_t * orientation: jpeg file orientation from exif
  * @args jpeg_byte_count : byte count for thumbnail will set.
