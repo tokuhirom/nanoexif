@@ -18,7 +18,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -38,13 +38,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="tabs">
     <ul>
       <li><a href="files.html"><span>File&nbsp;List</span></a></li>
-      <li><a href="globals.html"><span>Globals</span></a></li>
+      <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="contents">
-<h1>src/nanoexif-easy.c File Reference</h1><code>#include &lt;<a class="el" href="nanoexif-easy_8h_source.html">nanoexif-easy.h</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="nanoexif_8h_source.html">nanoexif.h</a>&gt;</code><br/>
+<h1>src/nanoexif-easy.c File Reference</h1><code>#include &lt;nanoexif-easy.h&gt;</code><br/>
+<code>#include &lt;nanoexif.h&gt;</code><br/>
 <code>#include &lt;stdlib.h&gt;</code><br/>
 <code>#include &lt;stdint.h&gt;</code><br/>
 <code>#include &lt;string.h&gt;</code><br/>
@@ -55,6 +55,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td class="memItemLeft" align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="nanoexif-easy_8c.html#a190455b3c4c7cb700fc0570755c096b0">nanoexif_easy_thumbnail</a> (FILE *fp, uint16_t *orientation, uint32_t *jpeg_byte_count)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FILE * fp: file pointer for reading exif  uint16_t * orientation: jpeg file orientation from exif  jpeg_byte_count : byte count for thumbnail will set.  <a href="#a190455b3c4c7cb700fc0570755c096b0"></a><br/></td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+
+<p>Definition in file <a class="el" href="nanoexif-easy_8c_source.html">nanoexif-easy.c</a>.</p>
 <hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a190455b3c4c7cb700fc0570755c096b0"></a><!-- doxytag: member="nanoexif&#45;easy.c::nanoexif_easy_thumbnail" ref="a190455b3c4c7cb700fc0570755c096b0" args="(FILE *fp, uint16_t *orientation, uint32_t *jpeg_byte_count)" -->
 <div class="memitem">
@@ -90,7 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>FILE * fp: file pointer for reading exif  uint16_t * orientation: jpeg file orientation from exif  jpeg_byte_count : byte count for thumbnail will set. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>thumbnail data will be return.you should free(2) after used.return NULL if error occurred. </dd></dl>
 
-<p>Definition at line <a class="el" href="nanoexif-easy_8c_source.html#l00013">13</a> of file <a class="el" href="nanoexif-easy_8c_source.html">nanoexif-easy.c</a>.</p>
+<p>Definition at line <a class="el" href="nanoexif-easy_8c_source.html#l00017">17</a> of file <a class="el" href="nanoexif-easy_8c_source.html">nanoexif-easy.c</a>.</p>
 
 </div>
 </div>
@@ -100,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:10:33 2010 by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Wed Mar 10 11:29:37 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
