@@ -28,6 +28,12 @@ char * nanoexif_easy_thumbnail(FILE * fp, uint16_t *orientation, uint32_t *jpeg_
     {
         uint16_t cnt;
         nanoexif_ifd_entry* entries = nanoexif_read_ifd(ne, ifd0_offset, &ifd1_offset, &cnt);
+        if (!entries) { /* some error was occurred */
+            return NULL;
+        }
+        if (ifd1_offset == 0) { /* this jpeg does not contains ifd1. */
+            return NULL;
+        }
         int i;
         for (i=0; i<cnt; i++) {
             switch (entries[i].tag) {
