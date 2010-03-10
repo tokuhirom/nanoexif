@@ -135,8 +135,8 @@ static inline nanoexif * parse_app1(FILE * fp, size_t app1_len, uint32_t * ifd_o
 }
 
 /** initialize nanoexif struct.
- * @args FILE * fp: file pointer for reading exif
- * @args uint32_t *ifd_offset: offset bytes for first ifd entry.
+ * @param FILE * fp: file pointer for reading exif
+ * @param uint32_t *ifd_offset: offset bytes for first ifd entry.
  * @return pointer of struct nanoexif if succeeded, return NULL otherwise.
  *
  * You should call nanoexif_free(ne) if return value is not null.
@@ -187,7 +187,7 @@ nanoexif * nanoexif_init(FILE *fp, uint32_t *ifd_offset) {
 }
 
 /** destruct the struct nanoexif*.
- * @args nanoeixf * ne: pointer for destructing
+ * @param nanoeixf * ne: pointer for destructing
  */
 void nanoexif_free(nanoexif * ne) {
     if (ne) {
@@ -197,10 +197,10 @@ void nanoexif_free(nanoexif * ne) {
 }
 
 /** read ifd entries
- * @args nanoeixf * ne: pointer for struct nanoexif.
- * @args uint16_t offset: offset for the ifd entry
- * @args uint32_t *next_offset: offset for the next ifd entry will be set.
- * @args uint16_t * cnt: count of entries will be set.
+ * @param nanoeixf * ne: pointer for struct nanoexif.
+ * @param uint16_t offset: offset for the ifd entry
+ * @param uint32_t *next_offset: offset for the next ifd entry will be set.
+ * @param uint16_t * cnt: count of entries will be set.
  * @return array of nanoeixf_ifd_entry.the number of elements will set to argument 'cnt'.return NULL if error occurred.
  * 
  * You should call free(entries), after use it.
@@ -226,8 +226,8 @@ nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t* 
 #define ENTRY_DATA_COPY(x, y, z) memcpy(x, ne->buf+y, z);
 
 /** read short value from ifd entry
- * @args nanoeixf * ne: pointer for struct nanoexif.
- * @args nanoexif_ifd_entry * entry
+ * @param nanoeixf * ne: pointer for struct nanoexif.
+ * @param nanoexif_ifd_entry * entry
  * @return array of uint16_t.return NULL if error occurred.
  *
  * You should free(2) the return value, after used.

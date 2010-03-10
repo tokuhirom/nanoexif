@@ -4,6 +4,12 @@
 #include <stdint.h>
 #include <string.h>
 
+/**
+ * @args FILE * fp: file pointer for reading exif
+ * @args uint16_t * orientation: jpeg file orientation from exif
+ * @args jpeg_byte_count : byte count for thumbnail will set.
+ * @return thumbnail data will be return.you should free(2) after used.return NULL if error occurred.
+ */
 char * nanoexif_easy_thumbnail(FILE * fp, uint16_t *orientation, uint32_t *jpeg_byte_count) {
     uint32_t ifd0_offset;
     nanoexif * ne = nanoexif_init(fp, &ifd0_offset);
