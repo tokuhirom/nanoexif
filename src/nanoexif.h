@@ -29,11 +29,17 @@ THE SOFTWARE.
 #include <stdint.h>
 #include <stdbool.h>
 
+/**
+ * enum nanoexif_endian describe the endian.
+ */
 typedef enum {
     NANOEXIF_LITTLE_ENDIAN,
     NANOEXIF_BIG_ENDIAN,
 } nanoexif_endian;
 
+/**
+ * struct nanoexif_ifd_entry describe the IFD entry.
+ */
 typedef struct {
     uint16_t tag;
     uint16_t type;
@@ -41,6 +47,9 @@ typedef struct {
     uint8_t  offset[4];
 } nanoexif_ifd_entry;
 
+/**
+ * struct nanoexif describe the exif(means APP1 segment).
+ */
 typedef struct {
     FILE *fp;
     nanoexif_endian endian;
