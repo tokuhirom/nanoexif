@@ -34,14 +34,6 @@ This module supports C99. I don't want to support legacy systems, but I can acce
 
 /**
 
-exif structure
-
-The starting marker order of is establised by EXIF spec.
-
-    SOI => APP1
-
-see.
-
 http://hp.vector.co.jp/authors/VA032610/JPEGFormat/AboutExif.htm
 http://www.ryouto.jp/f6exif/exif.html
 

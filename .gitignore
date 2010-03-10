@@ -8,3 +8,4 @@ t/01_simple.t
 tools/nanoexif-dump
 t/02_thumbnail
 t/02_thumbnail.t
+*.org

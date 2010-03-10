@@ -18,6 +18,12 @@ $e->test('t/01_simple', ['t/01_simple.c', @src]);
 $e->test('t/02_thumbnail', ['t/02_thumbnail.c', @src]);
 $e->program('./tools/nanoexif-dump', ['tools/nanoexif-dump.c', @src]);
 
+postambles(<<'...');
+docs: Doxyfile src/*.c src/*.h
+	doxygen && cd docs/ && git add . && git ci -m 'updated docs' && git push origin gh-pages && cd .. && git add docs && git ci -m 'updated docs' docs
+
+...
+
 WriteAll();
 
 # gcc -DDEBUG -DTEST -DNANOEXIF_MACHINE_ENDIAN=NANOEXIF_BIG_ENDIAN -arch ppc nanoexif.c -o nanoexif
