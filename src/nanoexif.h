@@ -51,7 +51,6 @@ typedef struct {
  * struct nanoexif describe the exif(means APP1 segment).
  */
 typedef struct {
-    FILE *fp;
     nanoexif_endian endian;
     uint8_t * buf;
     size_t offset;

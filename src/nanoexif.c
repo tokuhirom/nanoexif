@@ -120,7 +120,6 @@ static inline nanoexif * parse_app1(FILE * fp, size_t app1_len, uint32_t * ifd_o
         return NULL;
     }
     ne->endian         = endian;
-    ne->fp             = fp;
     ne->buf            = buf;
     return ne;
 }

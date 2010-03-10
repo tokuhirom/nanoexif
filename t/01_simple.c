@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
     uint32_t ifd0_offset;
     nanoexif * ne = nanoexif_init(ifp, &ifd0_offset);
     assert(ne);
+    fclose(ifp);
 
     // read ifd0
     uint16_t orientation = 0;
@@ -132,7 +133,6 @@ int main(int argc, char **argv) {
     ok(memcmp(thumb, "\xFF\xD8", 2)==0, "jpeg?");
     ok(memcmp(thumb+(jpeg_byte_count-2), "\xFF\xD9", 2)==0, "jpeg eoi");
     free(thumb);
-    fclose(ifp);
 
     done_testing();
     return 0;
