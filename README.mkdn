@@ -23,6 +23,6 @@ iphone-exif (http://code.google.com/p/iphone-exif/ ) is exif manipulation librar
 REFERENCE
 ---------
 
-http://hp.vector.co.jp/authors/VA032610/JPEGFormat/AboutExif.htm
-http://www.ryouto.jp/f6exif/exif.html
+ * http://hp.vector.co.jp/authors/VA032610/JPEGFormat/AboutExif.htm
+ * http://www.ryouto.jp/f6exif/exif.html
 

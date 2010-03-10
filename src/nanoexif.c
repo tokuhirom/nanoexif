@@ -34,8 +34,11 @@ This module supports C99. I don't want to support legacy systems, but I can acce
 
 /**
 
-http://hp.vector.co.jp/authors/VA032610/JPEGFormat/AboutExif.htm
-http://www.ryouto.jp/f6exif/exif.html
+@mainpage
+
+This is nanoexif's programmer's docs.
+
+If you want to know more details, please see http://github.com/tokuhirom/nanoexif
 
 */
 
@@ -131,8 +134,12 @@ static inline nanoexif * parse_app1(FILE * fp, size_t app1_len, uint32_t * ifd_o
     return ne;
 }
 
-/**
- * FF D8 FF E1 SS SS 45 78 69 66 00 00 TT TT
+/** initialize nanoexif struct.
+ * @args FILE * fp: file pointer for reading exif
+ * @args uint32_t *ifd_offset: offset bytes for first ifd entry.
+ * @return pointer of struct nanoexif if succeeded, return NULL otherwise.
+ *
+ * You should call nanoexif_free(ne) if return value is not null.
  */
 nanoexif * nanoexif_init(FILE *fp, uint32_t *ifd_offset) {
     {
@@ -179,12 +186,26 @@ nanoexif * nanoexif_init(FILE *fp, uint32_t *ifd_offset) {
     return NULL; // should not reach here
 }
 
+/** destruct the struct nanoexif*.
+ * @args nanoeixf * ne: pointer for destructing
+ */
 void nanoexif_free(nanoexif * ne) {
-    free(ne->buf);
-    free(ne);
+    if (ne) {
+        free(ne->buf);
+        free(ne);
+    }
 }
 
-nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t* next, uint16_t * cnt) {
+/** read ifd entries
+ * @args nanoeixf * ne: pointer for struct nanoexif.
+ * @args uint16_t offset: offset for the ifd entry
+ * @args uint32_t *next_offset: offset for the next ifd entry will be set.
+ * @args uint16_t * cnt: count of entries will be set.
+ * @return array of nanoeixf_ifd_entry.the number of elements will set to argument 'cnt'.return NULL if error occurred.
+ * 
+ * You should call free(entries), after use it.
+ */
+nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t* next_offset, uint16_t * cnt) {
     *cnt = read_16(ne->endian, ne->buf + offset);
     nanoexif_ifd_entry * entries = malloc(sizeof(nanoexif_ifd_entry)* (*cnt));
     if (!entries) { return NULL; }
@@ -198,12 +219,19 @@ nanoexif_ifd_entry* nanoexif_read_ifd(nanoexif * ne, uint16_t offset, uint32_t* 
         }
     }
     uint32_t next_ifd_offset_pos = offset+2+sizeof(nanoexif_ifd_entry)*(*cnt);
-    *next = read_32(ne->endian, ne->buf+next_ifd_offset_pos);
+    *next_offset = read_32(ne->endian, ne->buf+next_ifd_offset_pos);
     return entries;
 }
 
 #define ENTRY_DATA_COPY(x, y, z) memcpy(x, ne->buf+y, z);
 
+/** read short value from ifd entry
+ * @args nanoeixf * ne: pointer for struct nanoexif.
+ * @args nanoexif_ifd_entry * entry
+ * @return array of uint16_t.return NULL if error occurred.
+ *
+ * You should free(2) the return value, after used.
+ */
 uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint16_t)) {
         uint16_t *ret = malloc(sizeof(uint16_t)*entry->count);
@@ -231,6 +259,8 @@ uint16_t *nanoexif_get_ifd_entry_data_short(nanoexif *ne, nanoexif_ifd_entry *en
 }
 
 
+/** ditto.
+ */
 uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4/sizeof(uint32_t)) {
         uint32_t *ret = malloc(sizeof(uint32_t));
@@ -254,8 +284,7 @@ uint32_t *nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *ent
     }
 }
 
-/**
- * @return allocated string. you should free(2) the buffer.
+/** ditto.
  */
 char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry) {
     if (entry->count <= 4) {
@@ -272,6 +301,8 @@ char * nanoexif_get_ifd_entry_data_ascii(nanoexif *ne, nanoexif_ifd_entry *entry
     }
 }
 
+/** ditto.
+ */
 uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry *entry) {
     /* rational's minimal size is 8 bytes.cannot put on the offset. */
     uint32_t offset = read_32(ne->endian, entry->offset);
