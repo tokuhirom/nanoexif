@@ -1,5 +1,8 @@
 #ifndef NANOEXIF_H__
 #define NANOEXIF_H__
+#ifdef __cplusplus
+extern "C" {
+#endif  /* __cplusplus */
 
 /*
 The MIT License
@@ -88,5 +91,8 @@ uint32_t * nanoexif_get_ifd_entry_data_rational(nanoexif *ne, nanoexif_ifd_entry
 uint32_t * nanoexif_get_ifd_entry_data_long(nanoexif *ne, nanoexif_ifd_entry *entry);
 const char *nanoexif_tag_name(uint32_t n);
 
-#endif  // NANOEXIF_H__
+#ifdef __cplusplus
+}
+#endif  /* __cplusplus */
+#endif  /* NANOEXIF_H__ */
 
